@@ -34,8 +34,12 @@ public class ValidatorJsonReader {
         for (MainResult result : results) {
                 if (result.getTestResult().equals("FAILED")) {
                     count++;
-                    failedResults.add(result.getProductCode() + result.getGrossAmount()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction());
+                   boolean success= failedResults.add("Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction()+
+                            " : Postal and Geocode -"+result.getAddress().getPostalCode()+":"+result.getAddress().getGeocode()+" : City - "+result.getAddress().getCity() +" state - "+result.getAddress().getCounty());
+
+
                 }
+
 
         }
 
