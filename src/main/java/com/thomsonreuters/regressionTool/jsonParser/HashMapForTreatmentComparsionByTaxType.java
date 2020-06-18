@@ -62,21 +62,20 @@ public class HashMapForTreatmentComparsionByTaxType {
 
     void productHashMapGenerator() {
         for (Product p : root.getProducts()) {
-            //if(!productHashMap.containsKey(p.getProductCategoryKey().toString()))
-            productHashMap.put(p.getProductCategoryKey().toString(), p.getProductCategory());
-//             else
-//             {
-//                 String message="ProductCategoryKey occured more than 1 time: "+p.getProductCategory().toString();
-//                 System.out.println(message);
-//                 System.exit(0);
-//             }
+            if (!productHashMap.containsKey(p.getProductCategoryKey().toString()))
+                productHashMap.put(p.getProductCategoryKey().toString(), p.getProductCategory());
         }
     }
 
 
     void jurisdictionHashMapGenerator() {
-        for (Address a : root.getAddresses())
-            jurisdictionHashMap.put(a.getJurisdictionKey(), a.getPostalCode() + "-" + a.getState() + "-" + a.getCity() + "-" + a.getCountry());
+        List<Address> addr=root.getAddresses();
+        Collections.sort(addr);
+        for (Address a : addr){
+            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey()))
+                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+        }
+
     }
 
     void jurisdictionTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
@@ -98,7 +97,7 @@ public class HashMapForTreatmentComparsionByTaxType {
             //String key=root.getJurisdictionTreatmentMappings().get(i).getKey();
             List<Long> fromData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
             List<Long> toData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
-            keys = productCategoryKey + ":" + jurisdictionKey + ":" + taxType;
+            keys = productHashMap.get(productCategoryKey) + ":" + jurisdictionHashMap.get(jurisdictionKey) + ":" + taxType;
             value = "From-" + fromData + "-To-" + toData;
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);

@@ -98,16 +98,16 @@ public class Controller {
                 "Wish_UAT_Switzerland_Test_2").collect(Collectors.toList());
 
         Map<String, Collection<String>> map = new HashMap<>();
-       // map.put("01_Wayfair_US", wayFairextracts);
+        map.put("01_Wayfair_US", wayFairextracts);
         // map.put("VTest%20Industries", vTestExtracts);
-        //map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
-        map.put("01_Wayfair_US", netSuiteExtracts);
+        map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
+       // map.put("01_Wayfair_US", netSuiteExtracts);
 
 
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File jsonFile = new File("C:\\dell\\regression\\sat3\\" + extractName + "_sat.json");
+                    File jsonFile = new File("C:\\dell\\regression\\CE659_Without\\" + extractName + "_oldJar.json");
                     new JsonReader(jsonFile);
 
                 } catch (Exception e) {
