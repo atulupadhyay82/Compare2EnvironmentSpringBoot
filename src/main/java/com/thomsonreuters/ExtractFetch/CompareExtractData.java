@@ -117,7 +117,7 @@ public class CompareExtractData {
             map.forEach((company, extract) -> {
                 for (String extractName : extract) {
                     File firstFile = new File("C:\\dell\\regression\\CE659\\processed\\"+extractName+".txt" );
-                        File secondFile = new File("C:\\dell\\regression\\uat\\processed\\"+extractName+".txt" );
+                        File secondFile = new File("C:\\dell\\regression\\CE659_Without\\processed\\"+extractName+".txt" );
 
                     boolean equal = isEqual(firstFile, secondFile);
                     if (equal) {
