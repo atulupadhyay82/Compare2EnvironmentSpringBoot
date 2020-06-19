@@ -2,9 +2,7 @@ package com.thomsonreuters.regressionTool.jsonParser;
 
 
 import com.thomsonreuters.regressionTool.excelOperations.ExcelWriter;
-import com.thomsonreuters.regressionTool.pojoClasses.Root;
-import com.thomsonreuters.regressionTool.pojoClasses.TierList;
-import com.thomsonreuters.regressionTool.pojoClasses.Treatment;
+import com.thomsonreuters.regressionTool.pojoClasses.*;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -14,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class HashMapForTreatmentComparsionByAuthority {
+public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
     Root root;
     ExcelWriter excelWriter = new ExcelWriter();
     HashMap<String, String> productHashMap = new HashMap();
@@ -23,24 +21,53 @@ public class HashMapForTreatmentComparsionByAuthority {
     HashMap<String, String> jurisdictionAuthoritiesHashMap = new HashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
-    //excelWriter.rowSize=root.getJurisdictionTreatmentMappings().size();
-    MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
-    String keys, value;
 
-    // MultiValuedMap<K, String> map = new MultiValuedHashMap<K, String>();
 
-    public HashMapForTreatmentComparsionByAuthority(Root root) {
+    public HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey(Root root) {
         this.root = root;
         hashMapGenerator();
     }
 
     public void hashMapGenerator() {
         try {
+            productHashMapGenerator();
+            jurisdictionHashMapGenerator();
+            authorityHashMapGenerator();
+            jurisdictionAuthoritiesHashMapGenerator();
             treatmentHashMapGenerator();
             authorityTreatmentMappingsExcelWriter();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    void productHashMapGenerator() {
+        for (Product p : root.getProducts()) {
+            if (!productHashMap.containsKey(p.getProductCategoryKey().toString()))
+                productHashMap.put(p.getProductCategoryKey().toString(), p.getProductCategory());
+        }
+    }
+
+    void authorityHashMapGenerator() {
+        for (Authority a : root.getmAuthorities()) {
+            authorityHashMap.put(a.getAuthorityKey(), a.getAuthorityName() + "-" + a.getAuthorityType());
+        }
+
+    }
+
+    void jurisdictionAuthoritiesHashMapGenerator() {
+        for (JurisdictionAuthority ja : root.getmJurisdictionAuthorities()) {
+            jurisdictionAuthoritiesHashMap.put(ja.getAuthorityKey(), ja.getJurisdictionKey());
+        }
+    }
+
+    void jurisdictionHashMapGenerator() {
+        List<Address> addr=root.getAddresses();
+        Collections.sort(addr);
+        for (Address a : addr){
+            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey()))
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+        }
+
     }
 
     void treatmentHashMapGenerator() {
@@ -59,36 +86,29 @@ public class HashMapForTreatmentComparsionByAuthority {
 
     void authorityTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
         String fileName = root.getExtractName();
-        String sheetName = root.getGroupingRule();
-        List<String> columnNames = new LinkedList<String>(Arrays.asList("productCategoryKey", "ProductCategory", "treatmentKey"
-                , "Rate", "authorityKey", "authority", "splitType", "splitAmountType", "splitTieredRate", "jurisdictionKey", "jurisdiction"));
-        //excelWriter.rowSize=root.getJurisdictionTreatmentMappings().size();
+        MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
+        String keys, value;
 
-        // excelWriter.createExcelFileAndSheet(fileName,sheetName,columnNames);
         for (int i = 0; i < root.getmAuthorityTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getmAuthorityTreatmentMappings().get(i).getProductCategoryKey();
             String treatmentKey = root.getmAuthorityTreatmentMappings().get(i).getTreatmentKey();
             String authorityKey = root.getmAuthorityTreatmentMappings().get(i).getAuthorityKey();
             String jurisdictionKey = jurisdictionAuthoritiesHashMap.get(authorityKey);
-            int rowNo = i + 1;
             String taxType = root.getmAuthorityTreatmentMappings().get(i).getTaxType();
-            //String key=root.getJurisdictionTreatmentMappings().get(i).getKey();
+            List<Long> fromDate = root.getmAuthorityTreatmentMappings().get(i).getEffectiveDate().getFrom();
+            List<Long> toDate = root.getmAuthorityTreatmentMappings().get(i).getEffectiveDate().getmTo();
 
-            List<Long> fromData = root.getmAuthorityTreatmentMappings().get(i).getEffectiveDate().getFrom();
-            List<Long> toData = root.getmAuthorityTreatmentMappings().get(i).getEffectiveDate().getmTo();
             keys = productCategoryKey + ":" + authorityKey + ":" + taxType;
-            value = "" + fromData + toData;
+            value = "DateRange: " + fromDate + "-To-" + toDate+"]";
 
             if (treatmentHashMapRate.containsKey(treatmentKey)) {
-                value = value + treatmentHashMapRate.get(treatmentKey);
+                value = value + "-rate:" + treatmentHashMapRate.get(treatmentKey);
             }
 
 
             if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
                 String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
-
-                value = value + "_" + str[0] + "_" + str[1] + "_" + str[2];
-                //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
+                 value = value + "-tierRate:" + str[0] + "_" + str[1] + "_" + str[2];
             }
             treatmentComaparator.put(keys, value);
 
@@ -96,9 +116,7 @@ public class HashMapForTreatmentComparsionByAuthority {
         }
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
-//        for (Map.Entry<String,String> entry: treatmentComaparator.entries()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
+
         List<String> keylist = new ArrayList<String>(treatmentComaparator.keySet());
 
 
@@ -116,7 +134,6 @@ public class HashMapForTreatmentComparsionByAuthority {
             e.printStackTrace();
         }
 
-        // System.out.println(key +  " : " + treatmentComaparator.get(key));
         try {
             FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
             for (String key : keylist) {
@@ -126,7 +143,6 @@ public class HashMapForTreatmentComparsionByAuthority {
                 Collections.sort(valueList);
                 myWriter.write(key + " : " + valueList);
                 myWriter.write(System.getProperty("line.separator"));
-
             }
             myWriter.close();
         } catch (IOException e) {

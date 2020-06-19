@@ -166,11 +166,11 @@ public class ExtractFetch {
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File outputfile= new File("C:\\dell\\regression\\CE659_Without\\CE_Execution.txt");
+                    File outputfile= new File("C:\\dell\\regression\\Derek\\CE_Execution.txt");
                   // ResponseEntity<String> responseEntity1 = getStringResponseEntity(uri_5, company, extractName, userName5, password5, null,outputfile);
 
                     ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_2, company, extractName, userName2, password2, headerName,outputfile);
-                    runExtract(responseEntity2, extractName, "oldJar");
+                    runExtract(responseEntity2, extractName, "new");
 
 
                 } catch (Exception e) {
@@ -197,8 +197,8 @@ public class ExtractFetch {
 
 
 
-        Files.write(Paths.get("C:\\dell\\regression\\CE659_Without\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
-        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\CE659_Without\\" + extractName + "_" + env + ".json C:\\dell\\regression\\CE659_Without\\sorted\\" + extractName + "_sorted_" + env + ".json";
+        Files.write(Paths.get("C:\\dell\\regression\\Derek\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
+        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\Derek\\" + extractName + "_" + env + ".json C:\\dell\\regression\\Derek\\sorted\\" + extractName + "_sorted_" + env + ".json";
 
         Process pr = Runtime.getRuntime().exec(sort_json);
         BufferedReader input = new BufferedReader(new InputStreamReader(

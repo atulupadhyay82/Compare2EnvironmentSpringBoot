@@ -107,8 +107,8 @@ public class Controller {
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File jsonFile = new File("C:\\dell\\regression\\CE659_Without\\" + extractName + "_oldJar.json");
-                    new JsonReader(jsonFile);
+                    File jsonFile = new File("C:\\dell\\regression\\Derek\\" + extractName + "_new.json");
+                    new JsonReader(jsonFile,"CategoryKey");
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

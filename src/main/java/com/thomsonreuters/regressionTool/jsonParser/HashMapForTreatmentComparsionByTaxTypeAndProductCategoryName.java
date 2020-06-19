@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class HashMapForTreatmentComparsionByTaxType {
+public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
 
 
     Root root;
@@ -20,7 +20,7 @@ public class HashMapForTreatmentComparsionByTaxType {
     HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
-    public HashMapForTreatmentComparsionByTaxType(Root root) {
+    public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(Root root) {
         this.root = root;
         hashMapGenerator();
     }
@@ -82,23 +82,17 @@ public class HashMapForTreatmentComparsionByTaxType {
         String fileName = root.getExtractName();
 
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
-
-        // MultiValuedMap<K, String> map = new MultiValuedHashMap<K, String>();
-
         String keys, value;
-
-        //System.out.println(treatmentHashMapSplitType.values());
-        //System.out.println(treatmentHashMapRate.values());
         for (int i = 0; i < root.getJurisdictionTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();
             String taxType = root.getJurisdictionTreatmentMappings().get(i).getTaxType();
             //String key=root.getJurisdictionTreatmentMappings().get(i).getKey();
-            List<Long> fromData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
-            List<Long> toData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
+            List<Long> fromDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
+            List<Long> toDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
             keys = productHashMap.get(productCategoryKey) + ":" + jurisdictionHashMap.get(jurisdictionKey) + ":" + taxType;
-            value = "From-" + fromData + "-To-" + toData;
+            value = "DateRange: " + fromDate + "-To-" + toDate+"]";
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);
             Iterator<String> iterator = values.iterator();
@@ -111,7 +105,7 @@ public class HashMapForTreatmentComparsionByTaxType {
                 if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
                     String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
 
-                    value = value + "-rate:" + str[2];
+                    value = value + "-tierRate:" + str[0] + "_" + str[1] + "_" + str[2];
                     //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
                 }
 
@@ -121,9 +115,6 @@ public class HashMapForTreatmentComparsionByTaxType {
         }
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
-//        for (Map.Entry<String,String> entry: treatmentComaparator.entries()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
         List<String> keylist = new ArrayList<String>(treatmentComaparator.keySet());
 
         Collections.sort(keylist);
