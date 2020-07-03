@@ -235,8 +235,10 @@ public class ExtractFetch {
 
 
 
+
         Files.write(Paths.get("C:\\dell\\regression\\newQA\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
         String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\newSAT\\" + extractName + "_" + env + ".json C:\\dell\\regression\\newQA\\sorted\\" + extractName + "_sorted_" + env + ".json";
+
 
 
         Process pr = Runtime.getRuntime().exec(sort_json);

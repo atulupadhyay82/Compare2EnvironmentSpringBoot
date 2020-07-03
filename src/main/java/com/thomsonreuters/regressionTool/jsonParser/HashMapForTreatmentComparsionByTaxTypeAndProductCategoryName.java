@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class HashMapForTreatmentComparsionByTaxType {
+public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
 
 
     Root root;
@@ -20,7 +20,7 @@ public class HashMapForTreatmentComparsionByTaxType {
     HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
-    public HashMapForTreatmentComparsionByTaxType(Root root) {
+    public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(Root root) {
         this.root = root;
         hashMapGenerator();
     }
@@ -44,14 +44,15 @@ public class HashMapForTreatmentComparsionByTaxType {
 
 
     }
+
     void treatmentHashMapGenerator() {
         for (Treatment t : root.getTreatments()) {
             if (t.getSplitType() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
-                String str = "Tiers:";
+                String str = "Tiers";
                 for (TierList tierList : t.getTierList()) {
-                    str = str + "^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
+                    str = str + tierList.getOrder() + "-Low=" + tierList.getLowValue() + "-High=" + tierList.getHighValue() + "-rate=" + tierList.getRate() + "^^";
                 }
                 treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + str);
             }
@@ -61,44 +62,37 @@ public class HashMapForTreatmentComparsionByTaxType {
 
     void productHashMapGenerator() {
         for (Product p : root.getProducts()) {
-            //if(!productHashMap.containsKey(p.getProductCategoryKey().toString()))
-            productHashMap.put(p.getProductCategoryKey().toString(), p.getProductCategory());
-//             else
-//             {
-//                 String message="ProductCategoryKey occured more than 1 time: "+p.getProductCategory().toString();
-//                 System.out.println(message);
-//                 System.exit(0);
-//             }
+            if (!productHashMap.containsKey(p.getProductCategoryKey().toString()))
+                productHashMap.put(p.getProductCategoryKey().toString(), p.getProductCategory());
         }
     }
 
 
     void jurisdictionHashMapGenerator() {
-        for (Address a : root.getAddresses())
-            jurisdictionHashMap.put(a.getJurisdictionKey(), a.getPostalCode() + "-" + a.getState() + "-" + a.getCity() + "-" + a.getCountry());
+        List<Address> addr=root.getAddresses();
+        Collections.sort(addr);
+        for (Address a : addr){
+            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey()))
+                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+        }
+
     }
 
     void jurisdictionTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
         String fileName = root.getExtractName();
 
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
-
-        // MultiValuedMap<K, String> map = new MultiValuedHashMap<K, String>();
-
         String keys, value;
-
-        //System.out.println(treatmentHashMapSplitType.values());
-        //System.out.println(treatmentHashMapRate.values());
         for (int i = 0; i < root.getJurisdictionTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();
             String taxType = root.getJurisdictionTreatmentMappings().get(i).getTaxType();
             //String key=root.getJurisdictionTreatmentMappings().get(i).getKey();
-            List<Long> fromData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
-            List<Long> toData = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
-            keys = productCategoryKey + ":" + jurisdictionKey + ":" + taxType;
-            value = "From-" + fromData + "-To-" + toData;
+            List<Long> fromDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
+            List<Long> toDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
+            keys = productHashMap.get(productCategoryKey) + ":" + jurisdictionHashMap.get(jurisdictionKey) + ":" + taxType;
+            value = "DateRange: " + fromDate + "-To-" + toDate+"]";
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);
             Iterator<String> iterator = values.iterator();
@@ -111,8 +105,7 @@ public class HashMapForTreatmentComparsionByTaxType {
                 if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
                     String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
 
-
-                    value = value + "-tierRate:" + str[0] +  "_" + str[2];
+                    value = value + "-tierRate:" + str[0] + "_" + str[1] + "_" + str[2];
                     //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
                 }
 
@@ -122,9 +115,6 @@ public class HashMapForTreatmentComparsionByTaxType {
         }
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
-//        for (Map.Entry<String,String> entry: treatmentComaparator.entries()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
         List<String> keylist = new ArrayList<String>(treatmentComaparator.keySet());
 
         Collections.sort(keylist);

@@ -3,10 +3,11 @@ package com.thomsonreuters.regressionTool.pojoClasses;
 import com.google.gson.annotations.SerializedName;
 
 import javax.annotation.Generated;
+import java.math.BigInteger;
 
 @Generated("a")
 @SuppressWarnings("unused")
-public class Address {
+public class Address implements Comparable<Address>{
 
     @SerializedName("addressKey")
     private String mAddressKey;
@@ -25,12 +26,24 @@ public class Address {
     @SerializedName("county")
     private String mCounty;
 
+    @SerializedName("geocode")
+    private String mGeocode;
+
     public String getCounty() {
         return mCounty;
     }
 
     public void setCounty(String mCounty) {
         this.mCounty = mCounty;
+    }
+
+
+    public String getGeocode() {
+        return mGeocode;
+    }
+
+    public void setmGeocode(String mGeocode) {
+        this.mGeocode = mGeocode;
     }
 
 
@@ -88,5 +101,10 @@ public class Address {
 
     public void setState(String state) {
         mState = state;
+    }
+
+    @Override
+    public int compareTo(Address o) {
+        return  new BigInteger(this.getAddressKey()).compareTo(new BigInteger(o.getAddressKey()));
     }
 }

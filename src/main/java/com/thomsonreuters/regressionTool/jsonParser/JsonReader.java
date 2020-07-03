@@ -10,11 +10,11 @@ import java.io.FileReader;
 
 public class JsonReader {
 
-    JsonReader(File jsonFile) {
-        jsonReader(jsonFile);
+    JsonReader(File jsonFile,String runType) {
+        jsonReader(jsonFile,runType);
     }
 
-    public void jsonReader(File jsonFile) {
+    public void jsonReader(File jsonFile,String runType) {
 
         JSONParser parser = new JSONParser();
         FileReader fileReader = null;
@@ -31,14 +31,19 @@ public class JsonReader {
         Gson gson = new Gson();
         Root root = gson.fromJson(str, Root.class);
         if (root.getGroupingRule().equalsIgnoreCase("taxType")) {
+            if(runType.contains("CategoryKey"))
+                new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryKey(root);
+            else if (runType.contains("CategoryName"))
+                new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(root);
             //new HashMapGeneratorGroupByTaxType(root);
-            new HashMapForTreatmentComparsionByTaxType(root);
+
         } else if (root.getGroupingRule().equalsIgnoreCase("authority")) {
             //new HashMapGeneratorGroupByAuthority(root);
-            new HashMapForTreatmentComparsionByAuthority(root);
-        } else if (root.getGroupingRule().equalsIgnoreCase("authorityType")) {
-            //  new HashMapGeneratorGroupByAuthorityType(root);
-            new HashMapForTreatmentComparsionByTaxType(root);
+            if(runType.contains("CategoryKey"))
+                new HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey(root);
+            else if (runType.contains("CategoryName"))
+                new HashMapForTreatmentComparsionByAuthorityAndProductCategoryName(root);
+
         }
     }
 

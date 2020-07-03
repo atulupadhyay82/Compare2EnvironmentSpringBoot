@@ -122,6 +122,7 @@ public class Controller {
 
         Map<String, Collection<String>> map = new HashMap<>();
 
+
 //        map.put("01_Wayfair_US", wayFairextracts);
      // map.put("VTest%20Industries", vTestExtracts);
       //  map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
@@ -135,12 +136,14 @@ public class Controller {
 
 
 
+
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File jsonFile = new File("C:\\dell\\regression\\newSAT\\" + extractName + "_new.json");
 
-                    new JsonReader(jsonFile);
+                    File jsonFile = new File("C:\\dell\\regression\\Derek\\" + extractName + "_new.json");
+                    new JsonReader(jsonFile,"CategoryKey");
+
 
 
                 } catch (Exception e) {

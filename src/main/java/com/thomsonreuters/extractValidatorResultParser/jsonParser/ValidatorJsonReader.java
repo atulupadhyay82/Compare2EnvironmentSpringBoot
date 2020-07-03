@@ -7,6 +7,7 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -14,7 +15,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.util.*;
+
 
 
 public class ValidatorJsonReader {
@@ -23,6 +26,9 @@ public class ValidatorJsonReader {
         jsonReader(jsonFile);
     }
 
+    public void connectToDB(){
+
+    }
     public void jsonReader(String jsonFile) throws IOException {
 
 
@@ -41,6 +47,7 @@ public class ValidatorJsonReader {
         for (MainResult result : results) {
               //  if (result.getTestResult().contains("FAIL")) {
                     count++;
+
 
 //                   failedResults.add(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction()+
 //                           " : Postal and Geocode -"+result.getAddress().getPostalCode()+":"+result.getAddress().getGeocode());
