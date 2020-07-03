@@ -17,7 +17,6 @@ public class Controller {
                 "VTest%20Main",
                 "VTest%20Main%20Range",
                 "VTest%20Rule%20Range%20Error",
-                "VTest%20Rule%20Range%20Error",
                 "VTest%20Tiers",
                 "VTestVE-AllAddress",
                 "VTestVE-Authority",
@@ -26,8 +25,6 @@ public class Controller {
                 "VTestVE-TaxType"
 
         ).collect(Collectors.toList());
-
-        List<String> netSuiteExtracts = Stream.of("WayfairUAT_33_NY").collect(Collectors.toList());
 
         List<String> wayFairextracts = Stream.of(
 
@@ -97,18 +94,54 @@ public class Controller {
                 "Wish_UAT_PORTUGAL_TEST",
                 "Wish_UAT_Switzerland_Test_2").collect(Collectors.toList());
 
+
+             List<String> testWayfair = Stream.of("WayfairUAT_03_AZ_622",
+                "WayfairUAT_05_CA_622",
+                "WayfairUAT_10_FL_622",
+                "WayfairUAT_45_UT_622").collect(Collectors.toList());
+
+        List<String> testVTest = Stream.of("VTestVE-AllAddress_622").collect(Collectors.toList());
+
+        List<String> testCE570 = Stream.of(
+                "AZ_570_T703",
+                "AZ_570_T704",
+                "AZ_570_T705",
+                "AZ_570_T706",
+                "AZ_570_T707",
+                "AZ_570_T708",
+                "AZ_570_T709",
+                "AZ_570_T710",
+                "AZ_570_T711",
+                "AZ_570_T712",
+                "AZ_570_T735",
+                "AZ_570_T736").collect(Collectors.toList());
+
+        List<String> testTN = Stream.of("WayfairUAT_43_TN").collect(Collectors.toList());
+
+        List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
+
         Map<String, Collection<String>> map = new HashMap<>();
-       // map.put("01_Wayfair_US", wayFairextracts);
-        // map.put("VTest%20Industries", vTestExtracts);
-        //map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
-        map.put("01_Wayfair_US", netSuiteExtracts);
+
+//        map.put("01_Wayfair_US", wayFairextracts);
+     // map.put("VTest%20Industries", vTestExtracts);
+      //  map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
+//        map.put("01_Wayfair_US", testWayfair);
+//      map.put("VTest%20Industries", testVTest);
+
+        map.put("VTest%20Industries", testVTest);
+//        map.put("01_Wayfair_US", testTN);
+//
+//        map.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+
 
 
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File jsonFile = new File("C:\\dell\\regression\\sat3\\" + extractName + "_sat.json");
+                    File jsonFile = new File("C:\\dell\\regression\\newSAT\\" + extractName + "_new.json");
+
                     new JsonReader(jsonFile);
+
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

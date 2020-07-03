@@ -109,15 +109,32 @@ public class CompareExtractData {
                     "Wish_UAT_PORTUGAL_TEST",
                     "Wish_UAT_Switzerland_Test_2").collect(Collectors.toList());
 
+            List<String> testWayfair = Stream.of("WayfairUAT_03_AZ_622",
+                    "WayfairUAT_05_CA_622",
+                    "WayfairUAT_10_FL_622",
+                    "WayfairUAT_45_UT_622").collect(Collectors.toList());
+
+            List<String> testVTest = Stream.of("VTestVE-AllAddress_622").collect(Collectors.toList());
+
+            List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
+
+            List<String> testTN = Stream.of("WayfairUAT_43_TN").collect(Collectors.toList());
+
             Map<String, Collection<String>> map = new HashMap<>();
-            map.put("01_Wayfair_US", wayFairextracts);
-            // map.put("VTest%20Industries", vTestExtracts);
-            map.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+//            map.put("01_Wayfair_US", wayFairextracts);
+           map.put("VTest%20Industries", vTestExtracts);
+//            map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
+//        map.put("01_Wayfair_US", testWayfair);
+//        map.put("VTest%20Industries", testVTest);
+//            map.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+//            map.put("01_Wayfair_US", testTN);
 
             map.forEach((company, extract) -> {
                 for (String extractName : extract) {
-                    File firstFile = new File("C:\\dell\\regression\\CE659\\processed\\"+extractName+".txt" );
-                        File secondFile = new File("C:\\dell\\regression\\uat\\processed\\"+extractName+".txt" );
+
+                    File firstFile = new File("C:\\dell\\regression\\newSAT\\processed\\"+extractName+".txt" );
+                    File secondFile = new File("C:\\dell\\regression\\newQA\\processed\\"+extractName+".txt" );
+
 
                     boolean equal = isEqual(firstFile, secondFile);
                     if (equal) {

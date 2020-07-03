@@ -69,7 +69,12 @@ public class ExtractFetch {
                 "NetSuite%20CA%20Dev"
         ).collect(Collectors.toList());
 
-        List<String> randomExtracts = Stream.of("Small_extract_5States").collect(Collectors.toList());
+        List<String> testWayfair = Stream.of("WayfairUAT_03_AZ_622",
+                "WayfairUAT_05_CA_622",
+                "WayfairUAT_10_FL_622",
+                "WayfairUAT_45_UT_622").collect(Collectors.toList());
+
+        List<String> testVTest = Stream.of("VTestVE-AllAddress_622").collect(Collectors.toList());
 
         List<String> wishTestExtracts = Stream.of("Wish_UAT_Switzerland_Test",
                 "Wish_UAT_Medium_Test",
@@ -153,24 +158,56 @@ public class ExtractFetch {
                 "WayfairUAT_available2"
         ).collect(Collectors.toList());
 
+        List<String> test570 = Stream.of(
+                "AZ_570_T703",
+                "AZ_570_T704",
+                "AZ_570_T705",
+                "AZ_570_T706",
+                "AZ_570_T707",
+                "AZ_570_T708",
+                "AZ_570_T709",
+                "AZ_570_T710",
+                "AZ_570_T711",
+                "AZ_570_T712",
+                "AZ_570_T735",
+                "AZ_570_T736").collect(Collectors.toList());
+
+        List<String> test427 = Stream.of(
+                "WayfairUAT_33_NY").collect(Collectors.toList());
+
+        List<String> testTN = Stream.of("WayfairUAT_43_TN").collect(Collectors.toList());
+
+        List<String> testWayfairGoods=  Stream.of("WayfairUAT_56_TN_GOODS").collect(Collectors.toList());
+
+        List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
+
+
+
         //This data needs to be written (Object[])
         Map < String, Object[] > empinfo = new TreeMap < String, Object[] >();
 
         Map<String, Collection<String>> map = new HashMap<>();
-       // map.put("NetSuite%20CA%20Dev", randomExtracts);
-        map.put("01_Wayfair_US", wayFairextracts);
-      //  map.put("VTest%20Industries", vTestExtracts);
-        map.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+//       map.put("01_Wayfair_US", testWayfair);
+       map.put("VTest%20Industries", testVTest);
+//       map.put("01_Wayfair_US", wayFairextracts);
+     //  map.put("VTest%20Industries", vTestExtracts);
+//        map.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+
+        //map.put("01_Wayfair_US", test427);
+//        map.put("01_Wayfair_US", testTN);
+//        map.put("01s_Wayfair_FL_TN_Services",testWayfairService);
 
 
         map.forEach((company, extract) -> {
             for (String extractName : extract) {
                 try {
-                    File outputfile= new File("C:\\dell\\regression\\uat\\CE_Execution.txt");
+
+                    File outputfile= new File("C:\\dell\\regression\\newQA\\CE_Execution.txt");
                   // ResponseEntity<String> responseEntity1 = getStringResponseEntity(uri_5, company, extractName, userName5, password5, null,outputfile);
 
-                    ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_6, company, extractName, userName6, password6, headerName,outputfile);
-                    runExtract(responseEntity2, extractName, "uat");
+                    ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_5, company, extractName, userName3, password3, headerName,outputfile);
+                    runExtract(responseEntity2, extractName, "new");
+
 
 
                 } catch (Exception e) {
@@ -197,8 +234,10 @@ public class ExtractFetch {
 
 
 
-        Files.write(Paths.get("C:\\dell\\regression\\uat\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
-        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\uat\\" + extractName + "_" + env + ".json C:\\dell\\regression\\uat\\sorted\\" + extractName + "_sorted_" + env + ".json";
+
+        Files.write(Paths.get("C:\\dell\\regression\\newQA\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
+        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\newSAT\\" + extractName + "_" + env + ".json C:\\dell\\regression\\newQA\\sorted\\" + extractName + "_sorted_" + env + ".json";
+
 
         Process pr = Runtime.getRuntime().exec(sort_json);
         BufferedReader input = new BufferedReader(new InputStreamReader(

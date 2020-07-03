@@ -48,13 +48,14 @@ public class HashMapForTreatmentComparsionByAuthority {
             if (t.getSplitType() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
-                String str = null;
+                String str = "Tiers:";
                 for (TierList tierList : t.getTierList()) {
-                    str = str + tierList.getOrder() + "-Low=" + tierList.getLowValue() + "-High=" + tierList.getHighValue() + "-rate=" + tierList.getRate() + "^^";
+                    str = str + "^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
                 }
                 treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + str);
             }
         }
+
     }
 
     void authorityTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
@@ -87,9 +88,8 @@ public class HashMapForTreatmentComparsionByAuthority {
             if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
                 String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
 
-                value = value + "_" + str[0] + "_" + str[1] + "_" + str[2];
-                //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
-            }
+                value = value + "-tierRate:" + str[0] +  "_" + str[2];
+           }
             treatmentComaparator.put(keys, value);
 
 

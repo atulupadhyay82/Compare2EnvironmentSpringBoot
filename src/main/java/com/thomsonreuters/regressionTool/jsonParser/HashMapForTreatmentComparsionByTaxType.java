@@ -44,15 +44,14 @@ public class HashMapForTreatmentComparsionByTaxType {
 
 
     }
-
     void treatmentHashMapGenerator() {
         for (Treatment t : root.getTreatments()) {
             if (t.getSplitType() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
-                String str = "Tiers";
+                String str = "Tiers:";
                 for (TierList tierList : t.getTierList()) {
-                    str = str + tierList.getOrder() + "-Low=" + tierList.getLowValue() + "-High=" + tierList.getHighValue() + "-rate=" + tierList.getRate() + "^^";
+                    str = str + "^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
                 }
                 treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + str);
             }
@@ -112,7 +111,8 @@ public class HashMapForTreatmentComparsionByTaxType {
                 if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
                     String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
 
-                    value = value + "-rate:" + str[2];
+
+                    value = value + "-tierRate:" + str[0] +  "_" + str[2];
                     //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
                 }
 

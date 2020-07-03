@@ -86,6 +86,8 @@ public class HashMapGeneratorGroupByTaxType {
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();
+            List<Long> fromDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
+            List<Long> toDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
             int rowNo = i + 1;
             excelWriter.createRow(rowNo);
             excelWriter.writeInExcelSheet(0, productCategoryKey);
