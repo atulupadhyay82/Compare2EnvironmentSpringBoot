@@ -1,6 +1,8 @@
 package com.thomsonreuters.ExtractFetch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -175,52 +177,38 @@ public class ExtractFetch {
         List<String> test427 = Stream.of(
                 "WayfairUAT_33_NY").collect(Collectors.toList());
 
-        List<String> testTN = Stream.of("WayfairUAT_43_TN").collect(Collectors.toList());
-
         List<String> testWayfairGoods=  Stream.of("WayfairUAT_56_TN_GOODS").collect(Collectors.toList());
 
         List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
 
-
-
-        //This data needs to be written (Object[])
-        Map < String, Object[] > empinfo = new TreeMap < String, Object[] >();
-
-        Map<String, Collection<String>> map = new HashMap<>();
-//       map.put("01_Wayfair_US", testWayfair);
-       map.put("VTest%20Industries", testVTest);
-//       map.put("01_Wayfair_US", wayFairextracts);
-     //  map.put("VTest%20Industries", vTestExtracts);
-//        map.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
-
+        MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
+        multiValuedMap.put("01_Wayfair_US", testWayfair);
+        multiValuedMap.put("VTest%20Industries", testVTest);
+        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
+        multiValuedMap.put("VTest%20Industries", vTestExtracts);
+        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
         //map.put("01_Wayfair_US", test427);
 //        map.put("01_Wayfair_US", testTN);
-//        map.put("01s_Wayfair_FL_TN_Services",testWayfairService);
 
-
-        map.forEach((company, extract) -> {
-            for (String extractName : extract) {
+       for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
+            for(String extractName : entries.getValue())
+            {
                 try {
 
-                    File outputfile= new File("C:\\dell\\regression\\newQA\\CE_Execution.txt");
-                  // ResponseEntity<String> responseEntity1 = getStringResponseEntity(uri_5, company, extractName, userName5, password5, null,outputfile);
+                    File outputfile= new File("C:\\dell\\regression\\latestSAT\\CE_Execution.txt");
 
-                    ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_5, company, extractName, userName3, password3, headerName,outputfile);
+                    ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3, password3, headerName,outputfile);
                     runExtract(responseEntity2, extractName, "new");
-
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("CompareExtract:: Error occured for extract " + extractName + ":: " + e.getMessage());
 
                 }
+
             }
-        });
-
-
-
-
+       }
     }
 
     private static void runExtract(ResponseEntity<String> responseEntity, String extractName, String env) throws Exception {
@@ -232,12 +220,8 @@ public class ExtractFetch {
 //        jSONObject.remove("extractDate");
 //        jSONObject.remove("contentVersion");
 
-
-
-
-
-        Files.write(Paths.get("C:\\dell\\regression\\newQA\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
-        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\newSAT\\" + extractName + "_" + env + ".json C:\\dell\\regression\\newQA\\sorted\\" + extractName + "_sorted_" + env + ".json";
+        Files.write(Paths.get("C:\\dell\\regression\\latestSAT\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
+        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\latestQA\\" + extractName + "_" + env + ".json C:\\dell\\regression\\newQA\\sorted\\" + extractName + "_sorted_" + env + ".json";
 
 
 

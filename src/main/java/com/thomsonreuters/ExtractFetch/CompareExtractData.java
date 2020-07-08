@@ -1,5 +1,7 @@
 package com.thomsonreuters.ExtractFetch;
 
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 
 
@@ -119,24 +121,30 @@ public class CompareExtractData {
             List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
 
             List<String> testTN = Stream.of("WayfairUAT_43_TN").collect(Collectors.toList());
+            List<String> wayfairRandomTest = Stream.of("WayfairUAT_05_CA","WayfairUAT_07_CT","WayfairUAT_40_RI","WayfairUAT_40B_RI").collect(Collectors.toList());
 
-            Map<String, Collection<String>> map = new HashMap<>();
-//            map.put("01_Wayfair_US", wayFairextracts);
-           map.put("VTest%20Industries", vTestExtracts);
-//            map.put("zz%20-%20Acct%20-%20WISH", wishTestExtracts);
-//        map.put("01_Wayfair_US", testWayfair);
-//        map.put("VTest%20Industries", testVTest);
-//            map.put("01s_Wayfair_FL_TN_Services",testWayfairService);
-//            map.put("01_Wayfair_US", testTN);
-
-            map.forEach((company, extract) -> {
-                for (String extractName : extract) {
-
-
-                    File firstFile = new File("C:\\dell\\regression\\newSAT\\processed\\"+extractName+".txt" );
-                    File secondFile = new File("C:\\dell\\regression\\newQA\\processed\\"+extractName+".txt" );
+            MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
+            multiValuedMap.put("01_Wayfair_US", testWayfair);
+            multiValuedMap.put("VTest%20Industries", testVTest);
+            multiValuedMap.put("01_Wayfair_US", wayFairextracts);
+            multiValuedMap.put("VTest%20Industries", vTestExtracts);
+            multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+            multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+            //map.put("01_Wayfair_US", test427);
+//        map.put("01_Wayfair_US", testTN);
+//            multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
+            for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
+                for(String extractName : entries.getValue())
+                {
 
 
+                    File firstFile = new File("C:\\dell\\regression\\latestQA\\processed\\"+extractName+".txt" );
+                    File secondFile = new File("C:\\dell\\regression\\newSAT\\processed\\"+extractName+".txt" );
+
+                    if(firstFile == null || secondFile == null){
+                        System.out.println("File does not exist- "+ extractName);
+                        continue;
+                    }
                     boolean equal = isEqual(firstFile, secondFile);
                     if (equal) {
                         match.add(extractName);
@@ -144,7 +152,7 @@ public class CompareExtractData {
                         noMatch.add(extractName);
                     }
                 }
-            });
+            }
 
             for (String e : match) {
                 System.out.println(e + " - match");

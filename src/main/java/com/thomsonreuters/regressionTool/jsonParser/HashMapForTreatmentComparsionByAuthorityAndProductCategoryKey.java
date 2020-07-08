@@ -23,7 +23,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
     HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
 
 
-    public HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey(Root root) throws IOException {
+    public HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey(Root root) {
         this.root = root;
         hashMapGenerator();
     }

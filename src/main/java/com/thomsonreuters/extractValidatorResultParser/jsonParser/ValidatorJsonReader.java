@@ -42,35 +42,35 @@ public class ValidatorJsonReader {
         List<MainResult> results = new Gson().fromJson(reader, new TypeToken<List<MainResult>>() {
         }.getType());
         MultiValuedMap<String,String> failedResults = new ArrayListValuedHashMap<>();
-
+        Set<String> failedJurisdiction = new TreeSet<>();
         int count=0;
         for (MainResult result : results) {
-              //  if (result.getTestResult().contains("FAIL")) {
-                    count++;
+               if (result.getTestResult().contains("FAIL")) {
 
+                    failedJurisdiction.add(result.getJurisdiction());
 
 //                   failedResults.add(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction()+
 //                           " : Postal and Geocode -"+result.getAddress().getPostalCode()+":"+result.getAddress().getGeocode());
 
-                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : Jurisdiction- " + result.getJurisdiction()
-                           ," Result -"+result.getTestResult()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
+//                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : Jurisdiction- " + result.getJurisdiction()
+//                           ," Result -"+result.getTestResult()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
 
 
 
-               // }
+               }
 
+       }
 
-
-        }
+        System.out.println(failedJurisdiction);
         Collection<Map.Entry<String, String>> entries = failedResults.entries();
         List<String> keylist = new ArrayList<String>(failedResults.keySet());
 
         Collections.sort(keylist);
 
-        for (String key : keylist) {
-            Collection<String> values = failedResults.get(key);
-            System.out.println(key + " : " + failedResults.get(key));
-        }
+//        for (String key : keylist) {
+//            Collection<String> values = failedResults.get(key);
+//            System.out.println(key + " : " + failedResults.get(key));
+//        }
     }
 
 }

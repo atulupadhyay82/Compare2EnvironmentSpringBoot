@@ -20,21 +20,19 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryKey {
     HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
-    public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryKey(Root root) {
+    public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryKey(Root root) throws Exception {
         this.root = root;
         hashMapGenerator();
     }
 
-    public void hashMapGenerator() {
-        try {
+    public void hashMapGenerator() throws Exception{
+
             productHashMapGenerator();
             treatmentGroupHashMapGenerator();
             treatmentHashMapGenerator();
             jurisdictionHashMapGenerator();
             jurisdictionTreatmentMappingsExcelWriter();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     void treatmentGroupHashMapGenerator() {
