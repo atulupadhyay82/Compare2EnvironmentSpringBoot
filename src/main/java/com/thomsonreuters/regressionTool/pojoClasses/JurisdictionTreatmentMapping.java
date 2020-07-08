@@ -22,6 +22,16 @@ public class JurisdictionTreatmentMapping {
     private String mTaxType;
     @SerializedName("treatmentGroupKey")
     private String mTreatmentGroupKey;
+    @SerializedName("authorityType")
+    private String mAuthorityType;
+
+    public String getmAuthorityType() {
+        return mAuthorityType;
+    }
+
+    public void setmAuthorityType(String mAuthorityType) {
+        this.mAuthorityType = mAuthorityType;
+    }
 
     public String getChangeType() {
         return mChangeType;

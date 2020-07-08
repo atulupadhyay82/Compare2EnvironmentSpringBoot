@@ -42,6 +42,9 @@ public class JsonReader {
                     new HashMapForTreatmentComparsionByAuthorityAndProductCategoryName(root);
 
             }
+            else if (root.getGroupingRule().equalsIgnoreCase("authorityType")) {
+                new HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey(root);
+            }
 
     }
 
