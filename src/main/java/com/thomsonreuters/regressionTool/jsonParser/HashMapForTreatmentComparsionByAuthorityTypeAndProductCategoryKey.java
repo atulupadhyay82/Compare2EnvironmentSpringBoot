@@ -95,6 +95,9 @@ public class HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey {
             List<Long> toDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
             keys = productCategoryKey + ":" +jurisdictionKey + ":" + authorityType+":"+taxType;
             value = "DateRange: " + fromDate + "-To-" + toDate+"]";
+            if(productCategoryKey.contains("1028059511478213031") && productCategoryKey.contains("3377714364674094217")){
+                continue;
+            }
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);
             Iterator<String> iterator = values.iterator();

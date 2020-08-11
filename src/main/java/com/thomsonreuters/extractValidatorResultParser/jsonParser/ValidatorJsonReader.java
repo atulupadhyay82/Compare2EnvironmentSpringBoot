@@ -41,19 +41,25 @@ public class ValidatorJsonReader {
         // convert JSON array to list of results
         List<MainResult> results = new Gson().fromJson(reader, new TypeToken<List<MainResult>>() {
         }.getType());
-        MultiValuedMap<String,String> failedResults = new ArrayListValuedHashMap<>();
-        Set<String> failedJurisdiction = new TreeSet<>();
-        int count=0;
-        for (MainResult result : results) {
-               if (result.getTestResult().contains("FAIL")) {
 
-                    failedJurisdiction.add(result.getJurisdiction());
+       // printFailedResultStateWise(results);
+       MultiValuedMap<String,String> failedResults = new ArrayListValuedHashMap<>();
+
+        Set<String> failedJurisdiction = new TreeSet<>();
+       int count=0;
+        for (MainResult result : results) {
+               if (result.getTestResult().contains("PASS")) {
+
+//                    failedJurisdiction.add(result.getJurisdiction());
 
 //                   failedResults.add(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction()+
 //                           " : Postal and Geocode -"+result.getAddress().getPostalCode()+":"+result.getAddress().getGeocode());
 
-//                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : Jurisdiction- " + result.getJurisdiction()
-//                           ," Result -"+result.getTestResult()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
+                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : Jurisdiction- " + result.getJurisdiction()+ " : Postal - "+ result.getAddress().getPostalCode()
+                                   +" << "+result.getAddress().getGeocode()+" >>"," Result -"+result.getTestResult()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
+
+                    count++;
+
 
 
 
@@ -61,18 +67,60 @@ public class ValidatorJsonReader {
 
        }
 
-        System.out.println(failedJurisdiction);
+
         Collection<Map.Entry<String, String>> entries = failedResults.entries();
         List<String> keylist = new ArrayList<String>(failedResults.keySet());
 
-        Collections.sort(keylist);
 
-//        for (String key : keylist) {
-//            Collection<String> values = failedResults.get(key);
-//            System.out.println(key + " : " + failedResults.get(key));
-//        }
+        for (String key : keylist) {
+            Collection<String> values = failedResults.get(key);
+            for(String value: values)
+                System.out.println(key + " : [" + value+"]");
+        }
     }
 
+    void printFailedResultStateWise(List<MainResult> results)
+    {
+        HashMap<String, Integer> failedMap=new HashMap<>();
+        for (MainResult result : results){
+            if (!result.getTestResult().contains("FAIL")){
+                String state=result.getAddress().getState();
+                if(!failedMap.containsKey(state)){
+                    failedMap.put(state,1);
+                }
+                else{
+                     failedMap.put(state, failedMap.get(state)+1);
+                }
+            }
+        }
+        Map<String, Integer> hm1 = sortByValue(failedMap);
+        for (Map.Entry<String, Integer> en : hm1.entrySet()) {
+            System.out.println("Key = " + en.getKey() +
+                    ", Value = " + en.getValue());
+        }
+    }
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
+    {
+        // Create a list from elements of HashMap
+        List<Map.Entry<String, Integer> > list =
+                new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2)
+            {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        // put data from sorted list to hashmap
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
+    }
 }
 
 

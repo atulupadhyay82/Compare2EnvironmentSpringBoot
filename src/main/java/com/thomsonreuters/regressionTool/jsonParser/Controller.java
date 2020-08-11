@@ -119,24 +119,25 @@ public class Controller {
                 "AZ_570_T735",
                 "AZ_570_T736").collect(Collectors.toList());
 
-        List<String> wayfairRandomTest = Stream.of("WayfairUAT_09_DC","WayfairUAT_37_OK").collect(Collectors.toList());
+        List<String> wayfairRandomTest = Stream.of("WayfairUAT_03_AZ").collect(Collectors.toList());
 
         List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
         MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
 //        multiValuedMap.put("VTest%20Industries", testVTest);
-//        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
+//         multiValuedMap.put("01_Wayfair_US", wayFairextracts);
 //        multiValuedMap.put("VTest%20Industries", vTestExtracts);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
 //        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
-//        map.put("01_Wayfair_US", test427);
-        multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
+       multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
+//        multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
 
         for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
             for(String extractName : entries.getValue())
             {
                 try {
-                    File jsonFile = new File("C:\\dell\\regression\\newSAT\\" + extractName + "_new.json");
+                   File jsonFile = new File("C:\\dell\\regression\\SAT\\" + extractName + "_new.json");
+                    //File jsonFile = new File("C:\\dell\\regression\\727&620\\response.json");
                     new JsonReader(jsonFile,"CategoryKey");
                 } catch (Exception e) {
                     e.printStackTrace();

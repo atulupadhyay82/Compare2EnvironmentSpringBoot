@@ -71,15 +71,23 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
     }
 
     void treatmentHashMapGenerator() {
+
         for (Treatment t : root.getTreatments()) {
             if (t.getSplitType() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
-                String str = "Tiers:";
+                String tierStr = "Tiers:";
+                String tempStr="";
+                TreeMap<Long, String> tierData= new TreeMap<>();
                 for (TierList tierList : t.getTierList()) {
-                    str = str + "^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
+                    tempStr="^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
+                    tierData.put(tierList.getOrder(),tempStr);
                 }
-                treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + str);
+
+                for(Map.Entry<Long,String> entry : tierData.entrySet()) {
+                    tierStr=tierStr+entry.getValue();
+                }
+                treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + tierStr);
             }
         }
 
@@ -101,22 +109,36 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
 
             keys = productCategoryKey + ":" + authorityKey + ":" + taxType;
             value = "DateRange: " + fromDate + "-To-" + toDate+"]";
-
-            if (treatmentHashMapRate.containsKey(treatmentKey)) {
-                value = value + "-rate:" + treatmentHashMapRate.get(treatmentKey);
+            if(productCategoryKey.contains("1028059511478213031") && productCategoryKey.contains("3377714364674094217")){
+                continue;
             }
 
+            Set<Double> flatRate= new TreeSet<>();
+            MultiValuedMap<String, String> tierRates =new ArrayListValuedHashMap<>();
+            Double rateValue=null;
+            try{
+                if (treatmentHashMapRate.containsKey(treatmentKey)) {
+                    flatRate.add(treatmentHashMapRate.get(treatmentKey));
+                }
+                if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
+                    String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
+                    tierRates.put(str[0], str[0]+"-tierRate:" + str[0] +  "_" + str[2]);
+                }
 
-            if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
-                String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
-
-                value = value + "-tierRate:" + str[0] +  "_" + str[2];
-           }
-
+                for(Double rate: flatRate)
+                    value = value + "-rate:" + rate;
+                List<String> keylist = new ArrayList<>(tierRates.keySet());
+                for(String key : keylist) {
+                    value = value+tierRates.get(key);
+                }
+            }catch(Exception ex){
+                System.out.println("Rate is either null or corruped for :"+ keys+ " -> "+rateValue);
+                value = value + "-rate:" + rateValue;
+            }
             treatmentComaparator.put(keys, value);
-
-
         }
+
+
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
 

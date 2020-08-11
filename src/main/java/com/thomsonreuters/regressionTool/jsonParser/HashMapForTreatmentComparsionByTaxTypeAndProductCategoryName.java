@@ -46,19 +46,29 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     }
 
     void treatmentHashMapGenerator() {
+
         for (Treatment t : root.getTreatments()) {
             if (t.getSplitType() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
-                String str = "Tiers";
+                String tierStr = "Tiers:";
+                String tempStr="";
+                TreeMap<Long, String> tierData= new TreeMap<>();
                 for (TierList tierList : t.getTierList()) {
-                    str = str + tierList.getOrder() + "-Low=" + tierList.getLowValue() + "-High=" + tierList.getHighValue() + "-rate=" + tierList.getRate() + "^^";
+                    tempStr="^^"+tierList.getOrder() + "_Low=" + tierList.getLowValue() + "_High=" + tierList.getHighValue() + "_rate=" + tierList.getRate() ;
+                    tierData.put(tierList.getOrder(),tempStr);
                 }
-                treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + str);
+                //System.out.println(tierData);
+                for(Map.Entry<Long,String> entry : tierData.entrySet()) {
+                    tierStr=tierStr+entry.getValue();
+                }
+                // System.out.println( t.getSplitType() + " " + t.getSplitAmountType() + " " + tierStr);
+                treatmentHashMapSplitType.put(t.getTreatmentKey(), t.getSplitType() + " " + t.getSplitAmountType() + " " + tierStr);
             }
         }
 
     }
+
 
     void productHashMapGenerator() {
         for (Product p : root.getProducts()) {
@@ -96,20 +106,35 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);
             Iterator<String> iterator = values.iterator();
+            Set<Double> flatRate= new TreeSet<>();
+            MultiValuedMap<String, String> tierRates =new ArrayListValuedHashMap<>();
+            Double rateValue = null;
             while (iterator.hasNext()) {
-                String treatmentKey = iterator.next();
-                if (treatmentHashMapRate.containsKey(treatmentKey)) {
-                    value = value + "-rate:" + treatmentHashMapRate.get(treatmentKey);
+                try {
+                    String treatmentKey = iterator.next();
+                    if (treatmentHashMapRate.containsKey(treatmentKey)) {
+                        rateValue = treatmentHashMapRate.get(treatmentKey);
+                        flatRate.add(rateValue);
+                    }
+
+                    if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
+                        String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
+                        tierRates.put(str[0], str[0] + "-tierRate:" + str[0] + "_" + str[2]);
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Rate is either null or corruped for :" + keys + " -> " + rateValue);
+                    value = value + "-rate:" + rateValue;
                 }
-
-                if (treatmentHashMapSplitType.containsKey(treatmentKey)) {
-                    String[] str = treatmentHashMapSplitType.get(treatmentKey).split(" ");
-
-                    value = value + "-tierRate:" + str[0] + "_" + str[1] + "_" + str[2];
-                    //excelWriter.writeInExcelSheet(9, treatmentHashMapSplitType.get(treatmentKey));
+            }
+            if (!flatRate.isEmpty()) {
+                for (Double rate : flatRate)
+                    value = value + "-rate:" + rate;
+            }
+            if (!tierRates.isEmpty()) {
+                List<String> keylist = new ArrayList<>(tierRates.keySet());
+                for (String key : keylist) {
+                    value = value + tierRates.get(key);
                 }
-
-
             }
             treatmentComaparator.put(keys, value);
         }
