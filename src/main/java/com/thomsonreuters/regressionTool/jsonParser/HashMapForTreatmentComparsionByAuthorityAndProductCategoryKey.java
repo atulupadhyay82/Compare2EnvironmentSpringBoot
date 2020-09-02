@@ -73,7 +73,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
     void treatmentHashMapGenerator() {
 
         for (Treatment t : root.getTreatments()) {
-            if (t.getSplitType() == null) {
+            if (t.getSplitType() == null || t.getSplitType().equalsIgnoreCase("T"))  {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
                 String tierStr = "Tiers:";

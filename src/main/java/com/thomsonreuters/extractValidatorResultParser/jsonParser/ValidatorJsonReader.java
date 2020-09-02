@@ -16,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -46,17 +47,19 @@ public class ValidatorJsonReader {
        MultiValuedMap<String,String> failedResults = new ArrayListValuedHashMap<>();
 
         Set<String> failedJurisdiction = new TreeSet<>();
+        DecimalFormat df2 = new DecimalFormat();
        int count=0;
         for (MainResult result : results) {
-               if (result.getTestResult().contains("PASS")) {
+               if (result.getTestResult().contains("FAIL") || result.getTestResult().contains("PASS") ) {
 
 //                    failedJurisdiction.add(result.getJurisdiction());
 
 //                   failedResults.add(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount() + " : Jurisdiction- " + result.getJurisdiction()+
 //                           " : Postal and Geocode -"+result.getAddress().getPostalCode()+":"+result.getAddress().getGeocode());
 
-                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : Jurisdiction- " + result.getJurisdiction()+ " : Postal - "+ result.getAddress().getPostalCode()
-                                   +" << "+result.getAddress().getGeocode()+" >>"," Result -"+result.getTestResult()+" : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
+                   failedResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : State- " + result.getAddress().getState()+ " : County- " + result.getAddress().getCounty()+
+                          " : City- " + result.getAddress().getCity()+ " : Postal - "+ result.getAddress().getPostalCode()
+                                   +" << "+result.getAddress().getGeocode()+" >>"," Result -"+result.getTestResult()+" : MS_Amt - " +df2.format( Double.parseDouble(result.getModelScenarioTaxAmount())) + " : CE_Amt - " + df2.format(Double.parseDouble(result.getExtractTaxAmount())));
 
                     count++;
 
@@ -70,6 +73,8 @@ public class ValidatorJsonReader {
 
         Collection<Map.Entry<String, String>> entries = failedResults.entries();
         List<String> keylist = new ArrayList<String>(failedResults.keySet());
+
+        Collections.sort(keylist);
 
 
         for (String key : keylist) {

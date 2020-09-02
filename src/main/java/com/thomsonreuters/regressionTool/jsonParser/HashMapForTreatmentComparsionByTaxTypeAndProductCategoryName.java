@@ -17,7 +17,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     Root root;
     HashMap<String, String> productHashMap = new HashMap();
     HashMap<String, Double> treatmentHashMapRate = new HashMap<String, Double>();
-    HashMap<String, String> jurisdictionHashMap = new HashMap<String, String>();
+    MultiValuedMap<String, String> jurisdictionHashMap = new ArrayListValuedHashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
     public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(Root root) {
@@ -37,6 +37,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         }
     }
 
+
     void treatmentGroupHashMapGenerator() {
         for (TreatmentGroupTreatment t : root.getTreatmentGroupTreatments()) {
             treatmentGroupHashMap.put(t.getTreatmentGroupKey(), t.getTreatmentKey());
@@ -48,7 +49,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     void treatmentHashMapGenerator() {
 
         for (Treatment t : root.getTreatments()) {
-            if (t.getSplitType() == null) {
+            if (t.getSplitType() == null || t.getSplitType().equalsIgnoreCase("T")) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
                 String tierStr = "Tiers:";
@@ -82,10 +83,8 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         List<Address> addr=root.getAddresses();
         Collections.sort(addr);
         for (Address a : addr){
-            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey()))
                  jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
         }
-
     }
 
     void jurisdictionTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
@@ -136,7 +135,11 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                     value = value + tierRates.get(key);
                 }
             }
-            treatmentComaparator.put(keys, value);
+            for(String address:jurisdictionHashMap.get(jurisdictionKey)){
+                keys= productHashMap.get(productCategoryKey) + ":" + address + ":" + taxType;
+                treatmentComaparator.put(keys, value);
+            }
+
         }
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();

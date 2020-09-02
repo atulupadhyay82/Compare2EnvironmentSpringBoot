@@ -73,7 +73,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
     void treatmentHashMapGenerator() {
 
         for (Treatment t : root.getTreatments()) {
-            if (t.getSplitType() == null) {
+            if (t.getSplitType() == null || t.getSplitType().equalsIgnoreCase("T")) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
             } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
                 String tierStr = "Tiers:";
@@ -159,7 +159,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
             for (String key : keylist) {
                 Collection<String> values = treatmentComaparator.get(key);
-                // System.out.println(key +  " : " + treatmentComaparator.get(key));
+                //System.out.println(key +  " : " + treatmentComaparator.get(key));
                 List<String> valueList = new ArrayList<String>(treatmentComaparator.get(key));
                 Collections.sort(valueList);
                 myWriter.write(key + " : " + valueList);
