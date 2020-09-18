@@ -17,8 +17,8 @@ public class CompareValidatorResults {
 
     public static void main(String a[]) {
         try {
-            String newJarFile= new String("C:\\dell\\functional\\622\\QA\\" + "WayfairUAT_03_AZ_Result_QA.json");
-            String oldJarFile= new String("C:\\dell\\functional\\622\\SAT\\" + "WayfairUAT_03_AZ_Result_SAT.json");
+            String newJarFile= new String("C:\\dell\\functional\\872\\" + "VA_QA.json");
+            String oldJarFile= new String("C:\\dell\\functional\\872\\" + "VA_SAT.json");
 
             MultiValuedMap<String,String> newJarMapResult = createMap(newJarFile);
             MultiValuedMap<String,String> oldJarMapResult= createMap(oldJarFile);

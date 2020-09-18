@@ -124,12 +124,12 @@ public class CompareExtractData {
             List<String> wayfairRandomTest = Stream.of("WayfairUAT_05_CA","WayfairUAT_07_CT","WayfairUAT_40_RI","WayfairUAT_40B_RI").collect(Collectors.toList());
 
             MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
-            multiValuedMap.put("01_Wayfair_US", testWayfair);
-            multiValuedMap.put("VTest%20Industries", testVTest);
+//            multiValuedMap.put("01_Wayfair_US", testWayfair);
+//            multiValuedMap.put("VTest%20Industries", testVTest);
             multiValuedMap.put("01_Wayfair_US", wayFairextracts);
             multiValuedMap.put("VTest%20Industries", vTestExtracts);
-            multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
-            multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+//            multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+//            multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
             //map.put("01_Wayfair_US", test427);
 //        map.put("01_Wayfair_US", testTN);
 //            multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
@@ -138,8 +138,8 @@ public class CompareExtractData {
                 {
 
 
-                    File firstFile = new File("C:\\dell\\regression\\latestQA\\processed\\"+extractName+".txt" );
-                    File secondFile = new File("C:\\dell\\regression\\newSAT\\processed\\"+extractName+".txt" );
+                    File firstFile = new File("C:\\dell\\regression\\809\\categoryName\\"+extractName+".txt" );
+                    File secondFile = new File("C:\\dell\\regression\\SAT\\categoryName\\"+extractName+".txt" );
 
                     if(firstFile == null || secondFile == null){
                         System.out.println("File does not exist- "+ extractName);

@@ -30,7 +30,6 @@ public class Controller {
         ).collect(Collectors.toList());
 
         List<String> wayFairextracts = Stream.of(
-
                 "WayfairUAT_01_AL",
                 "WayfairUAT_02_AK",
                 "WayfairUAT_03_AZ",
@@ -40,6 +39,7 @@ public class Controller {
                 "WayfairUAT_07_CT",
                 "WayfairUAT_08_DE",
                 "WayfairUAT_09_DC",
+                "WayfairUAT_09_DC_taxType",
                 "WayfairUAT_10_FL",
                 "WayfairUAT_11_GA",
                 "WayfairUAT_12_HI",
@@ -73,6 +73,7 @@ public class Controller {
                 "WayfairUAT_40B_RI",
                 "WayfairUAT_40_RI",
                 "WayfairUAT_41_SC",
+                "WayfairUAT_41_SC_Auth",
                 "WayfairUAT_42_SD",
                 "WayfairUAT_43_TN",
                 "WayfairUAT_44_TX",
@@ -117,28 +118,37 @@ public class Controller {
                 "AZ_570_T711",
                 "AZ_570_T712",
                 "AZ_570_T735",
+                "Wayfair_Test_AZ_570",
                 "AZ_570_T736").collect(Collectors.toList());
 
-        List<String> wayfairRandomTest = Stream.of("WayfairUAT_03_AZ").collect(Collectors.toList());
+        List<String> maxAmountExtract = Stream.of("Max_Amount_Extract_Authority","Max_Amount_Extract_TaxType", "WayfairUAT_14_IL").collect(Collectors.toList());
 
+        List<String> authorityDisabled = Stream.of("WayfairUAT_44_TX_Authority").collect(Collectors.toList());
         List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
+        List<String> testWayfairRandom=  Stream.of("WayfairUAT_44_TX_Authority_After","WayfairUAT_44_TX_Authority_Before").collect(Collectors.toList());
+
+        List<String> testDC=  Stream.of("WayfairUAT_52_Canada").collect(Collectors.toList());
+
         MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
 //        multiValuedMap.put("VTest%20Industries", testVTest);
-//         multiValuedMap.put("01_Wayfair_US", wayFairextracts);
-//        multiValuedMap.put("VTest%20Industries", vTestExtracts);
+         multiValuedMap.put("01_Wayfair_US", wayFairextracts);
+        multiValuedMap.put("VTest%20Industries", vTestExtracts);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
-//        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
-       multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
-//        multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
+//       multiValuedMap.put("01_Wayfair_US", testCE570);
+//       multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+//       multiValuedMap.put("01_Wayfair_US", authorityDisabled)
+//       multiValuedMap.put("01_Wayfair_US", maxAmountExtract);
+//     multiValuedMap.put("01_Wayfair_US", testDC);
+
 
         for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
             for(String extractName : entries.getValue())
             {
                 try {
-                   File jsonFile = new File("C:\\dell\\regression\\SAT\\" + extractName + "_new.json");
-                    //File jsonFile = new File("C:\\dell\\regression\\727&620\\response.json");
-                    new JsonReader(jsonFile,"CategoryKey");
+                    File jsonFile = new File("C:\\dell\\regression\\809\\" + extractName + "_new.json");
+                   // File jsonFile = new File("C:\\dell\\functional\\809\\" + extractName + ".json");
+                    new JsonReader(jsonFile,"CategoryName");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

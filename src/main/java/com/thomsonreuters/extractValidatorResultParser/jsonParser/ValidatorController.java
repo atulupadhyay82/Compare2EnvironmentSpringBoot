@@ -4,7 +4,7 @@ public class ValidatorController {
 
     public static void main(String a[]) {
         try {
-            String jsonFile= "C:\\Users\\C269865\\IdeaProjects\\trta-idpt_extract-validator\\" + "VTestVE-TaxType_Result_CAPS_QA.json";
+            String jsonFile= "C:\\dell\\functional\\872\\" + "VA_QA3.json";
 
             new ValidatorJsonReader(jsonFile);
         } catch (Exception e) {

@@ -64,10 +64,11 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
         List<Address> addr=root.getAddresses();
         Collections.sort(addr);
         for (Address a : addr){
-            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey()))
+            if(a.getState()!=null && a.getState().equalsIgnoreCase("UNITED STATES"))
                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+            else
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getCountry()+"-"+a.getmProvince()+"-"+"-"+a.getCity()+"-"+ a.getPostalCode());
         }
-
     }
 
     void treatmentHashMapGenerator() {

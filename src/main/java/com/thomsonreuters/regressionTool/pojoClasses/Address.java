@@ -29,6 +29,17 @@ public class Address implements Comparable<Address>{
     @SerializedName("geocode")
     private String mGeocode;
 
+    @SerializedName("province")
+    private String mProvince;
+
+    public String getmProvince() {
+        return mProvince;
+    }
+
+    public void setmProvince(String mProvince) {
+        this.mProvince = mProvince;
+    }
+
     public String getCounty() {
         return mCounty;
     }
