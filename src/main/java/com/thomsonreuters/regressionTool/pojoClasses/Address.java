@@ -32,6 +32,19 @@ public class Address implements Comparable<Address>{
     @SerializedName("province")
     private String mProvince;
 
+    @SerializedName("postalRange")
+    private PostalRange postalRange;
+
+    public PostalRange getPostalRange() {
+        return postalRange;
+    }
+
+    public void setPostalRange(PostalRange postalRange) {
+        this.postalRange = postalRange;
+    }
+
+
+
     public String getmProvince() {
         return mProvince;
     }

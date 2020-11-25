@@ -33,18 +33,22 @@ public class ExtractFetch {
         //dev environment
        String uri_1 = "https://cre-api-dev.onesourcetax.com/";
         String userName1 = "^elvis-rest-client";
-        String password1 = "password";
+        String password1 = "e95XnPgNsDVxpPQP";
        String headerName = "CRESDM";
 
        //tempQA environment
         String uri_2 = "http://cre-sdm2-alb-1249178167.us-east-1.elb.amazonaws.com/";
        String userName2 = "^elvis-rest-client";
-       String password2 = "password";
+       String password2 = "e95XnPgNsDVxpPQP";
 
        //sat environment
         String uri_3 = "https://cre-api-sat.onesourcetax.com/";
         String userName3 = "^elvis-rest-client";
         String password3 = "e95XnPgNsDVxpPQP";
+
+        //WISH sat environment
+        String userName3_WISH = "^creuser";
+        String password3_WISH = "password";
 
         //DCIS SAT env
         //dev environment
@@ -63,9 +67,8 @@ public class ExtractFetch {
         String userName6 = "^wayfair.ce.uat";
         String password6 = "w@f@1r19";
 
-
-
-
+        //localhost environment
+        String uri_local= "http://localhost:8101/";
 
         List<String> companies = Stream.of(
                 "01_Wayfair_US",
@@ -104,6 +107,7 @@ public class ExtractFetch {
 
         List<String> wayFairextracts = Stream.of(
                 "WayfairUAT_01_AL",
+                "WayfairUAT_01_AL_Store",
                 "WayfairUAT_02_AK",
                 "WayfairUAT_03_AZ",
                 "WayfairUAT_04_AR",
@@ -112,8 +116,7 @@ public class ExtractFetch {
                 "WayfairUAT_07_CT",
                 "WayfairUAT_08_DE",
                 "WayfairUAT_09_DC",
-                //"WayfairUAT_09_DC_taxType",
-               "WayfairUAT_10_FL",
+                "WayfairUAT_10_FL",
                 "WayfairUAT_11_GA",
                 "WayfairUAT_12_HI",
                 "WayfairUAT_13_ID",
@@ -141,6 +144,7 @@ public class ExtractFetch {
                 "WayfairUAT_35_ND",
                 "WayfairUAT_36_OH",
                 "WayfairUAT_37_OK",
+                "WayfairUAT_37_OK_Auth",
                 "WayfairUAT_38_OR",
                 "WayfairUAT_39_PA",
                 "WayfairUAT_40B_RI",
@@ -150,6 +154,7 @@ public class ExtractFetch {
                 "WayfairUAT_42_SD",
                 "WayfairUAT_43_TN",
                 "WayfairUAT_44_TX",
+                "WayfairUAT_44_TX_Auth",
                 "WayfairUAT_45_UT",
                 "WayfairUAT_46_VT",
                 "WayfairUAT_47_VA",
@@ -180,25 +185,52 @@ public class ExtractFetch {
                 "AZ_570_T736").collect(Collectors.toList());
 
         List<String> test427 = Stream.of(
-                "WayfairUAT_33_NY").collect(Collectors.toList());
+                "WayfairUAT_44_TX").collect(Collectors.toList());
 
         List<String> testWayfairGoods=  Stream.of("WayfairUAT_56_TN_GOODS").collect(Collectors.toList());
 
         List<String> wayfairRandomTest = Stream.of("Max_Amount_Extract_Authority","Max_Amount_Extract_TaxType").collect(Collectors.toList());
 
         List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
+        List<String> testToryBurch_838=  Stream.of(
+                        "TB_AllFlagged_885" ,
+                        "TB_FewFlags_885" ,
+                        "TB_FewFlags_886" ,
+                        "TB_Range_884" ,
+                        "TB_Range_885" ,
+                        "TB_Range_886" ,
+                        "TB_AllFlagged_884" ,
+                        "TB_AllFlagged_886" ,
+                        "TB_FewFlags_884"
+                        ).collect(Collectors.toList());
+
+        List<String> testToryBurch_825=  Stream.of(
+                "TB_825_NNN" ,
+                "TB_825_NNY" ,
+                "TB_825_NYN" ,
+                "TB_825_NYY" ,
+                "TB_825_YNN" ,
+                "TB_825_YNY" ,
+                "TB_825_YYN" ,
+                "TB_825_YYY"
+        ).collect(Collectors.toList());
+
+        List<String> testToryBurch=  Stream.of("ToryBurchMainExtract").collect(Collectors.toList());
+
+
 
         MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
-//        multiValuedMap.put("VTest%20Industries", testVTest);
-        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
-        multiValuedMap.put("VTest%20Industries", vTestExtracts);
+////        multiValuedMap.put("VTest%20Industries", testVTest);
+//        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
+        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
+//        multiValuedMap.put("VTest%20Industries", vTestExtracts);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
 //        multiValuedMap.put("01_Wayfair_US", test570);
-//      multiValuedMap.put("VTest%20Industries", wayfairRandomTest);
-//        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
-
-      //  multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
+//      multiValuedMap.put("VTest%20Industrie s", wayfairRandomTest);
+////        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
+//        multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //        multiValuedMap.put("01_Wayfair_US", testTN);
 
        for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
@@ -208,7 +240,8 @@ public class ExtractFetch {
 
                     File outputfile= new File("C:\\dell\\regression\\SAT\\CE_Execution.txt");
 
-                    ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
+                   ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
+                   //ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
                     runExtract(responseEntity2, extractName, "new");
 
                 } catch (Exception e) {
@@ -231,7 +264,7 @@ public class ExtractFetch {
 //        jSONObject.remove("contentVersion");
 
         Files.write(Paths.get("C:\\dell\\regression\\SAT\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
-        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\regression\\770\\" + extractName + "_" + env + ".json C:\\dell\\regression\\767\\sorted\\" + extractName + "_sorted_" + env + ".json";
+        String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\funtional\\825\\" + extractName + "_" + env + ".json C:\\dell\\functional\\825\\sorted\\" + extractName + "_sorted_" + env + ".json";
 
 
 

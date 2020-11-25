@@ -99,6 +99,12 @@ public class HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey {
 
         for (int i = 0; i < root.getJurisdictionTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
+            if(productCategoryKey.contains("1028059511478213031") ||
+                    productCategoryKey.contains("4732796101904615288")||
+                    productCategoryKey.contains("367623916056122557") ||
+                    productCategoryKey.contains("8630661440905874922") ||
+                    productCategoryKey.contains("3377714364674094217"))
+                continue;
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String authorityType = root.getJurisdictionTreatmentMappings().get(i).getmAuthorityType();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();

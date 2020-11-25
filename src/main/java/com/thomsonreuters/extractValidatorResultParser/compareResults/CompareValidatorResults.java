@@ -11,14 +11,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class CompareValidatorResults {
 
     public static void main(String a[]) {
         try {
-            String newJarFile= new String("C:\\dell\\functional\\872\\" + "VA_QA.json");
-            String oldJarFile= new String("C:\\dell\\functional\\872\\" + "VA_SAT.json");
+            String newJarFile= new String("C:\\dell\\functional\\966\\" + "TX_QA.json");
+            String oldJarFile= new String("C:\\dell\\functional\\966\\" + "TX_SAT.json");
 
             MultiValuedMap<String,String> newJarMapResult = createMap(newJarFile);
             MultiValuedMap<String,String> oldJarMapResult= createMap(oldJarFile);
@@ -30,6 +31,7 @@ public class CompareValidatorResults {
 
             Collections.sort(newJarKeyList);
             Collections.sort(oldJarKeyList);
+            int newPass=0,oldPass=0;
 
 
             for (String key : newJarKeyList) {
@@ -41,13 +43,16 @@ public class CompareValidatorResults {
                 if(newJarValues.toString().contains("FAIL") && (oldJarValues!=null && oldJarValues.toString().contains("PASS"))){
                     System.out.println("New Jar -" + key +" : "+ newJarValues);
                     System.out.println("Old Jar -" + key +" : "+ oldJarValues);
+                    oldPass++;
                 }
 
                 if(newJarValues.toString().contains("PASS") && (oldJarValues!=null && oldJarValues.toString().contains("FAIL"))){
-                    System.out.println("New Jar -" + key +" : "+ newJarValues);
-                    System.out.println("Old Jar -" + key +" : "+ oldJarValues);
+//                    System.out.println("New Jar -" + key +" : "+ newJarValues);
+//                    System.out.println("Old Jar -" + key +" : "+ oldJarValues);
+                    newPass++;
                 }
             }
+            System.out.println("New Pass- " + newPass+" old Pass- "+oldPass);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -66,11 +71,13 @@ public class CompareValidatorResults {
         List<MainResult> results = new Gson().fromJson(reader, new TypeToken<List<MainResult>>() {
         }.getType());
         MultiValuedMap<String, String> parseResults = new ArrayListValuedHashMap<>();
+        DecimalFormat df2 = new DecimalFormat();
 
         int count = 0;
         for (MainResult result : results) {
-            parseResults.put(" Product - " + result.getProductCode() + ": Amount - " + result.getGrossAmount() + " : Effective Date - " + result.getEffectiveDate() + " : Jurisdiction- " + result.getJurisdiction()
-                    , " Result -" + result.getTestResult() + " : MS_Amt - " + result.getModelScenarioTaxAmount() + " : CE_Amt - " + result.getExtractTaxAmount());
+            parseResults.put(" Product - "+result.getProductCode() + ": Amount - "+result.getGrossAmount()+" : Effective Date - "+ result.getEffectiveDate()+ " : State- " + result.getAddress().getState()+ " : County- " + result.getAddress().getCounty()+
+                         " : City- " + result.getAddress().getCity()+ " : Postal - "+ result.getAddress().getPostalCode()
+                                   +" << "+result.getAddress().getGeocode()+" >>"," Result -"+result.getTestResult()+" : MS_Amt - " +df2.format( Double.parseDouble(result.getModelScenarioTaxAmount())) + " : CE_Amt - " + df2.format(Double.parseDouble(result.getExtractTaxAmount())));
 
         }
 

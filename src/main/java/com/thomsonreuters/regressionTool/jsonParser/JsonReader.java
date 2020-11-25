@@ -45,6 +45,9 @@ public class JsonReader {
             else if (root.getGroupingRule().equalsIgnoreCase("authorityType")) {
                 new HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey(root);
             }
+            if(root.getmLocations()!=null){
+                new StoreMapper(root);
+            }
 
     }
 

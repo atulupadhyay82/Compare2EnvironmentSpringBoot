@@ -83,11 +83,12 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         List<Address> addr=root.getAddresses();
         Collections.sort(addr);
         for (Address a : addr){
-            if(a.getState()!=null && a.getState().equalsIgnoreCase("UNITED STATES"))
+            if(a.getPostalRange()==null)
                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
             else
-                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getCountry()+"-"+a.getmProvince()+"-"+"-"+a.getCity()+"-"+ a.getPostalCode());
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
         }
+     // System.out.println(jurisdictionHashMap);
     }
 
     void jurisdictionTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
@@ -97,6 +98,12 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         String keys, value;
         for (int i = 0; i < root.getJurisdictionTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
+            if(productCategoryKey.contains("1028059511478213031") ||
+                    productCategoryKey.contains("4732796101904615288")||
+                    productCategoryKey.contains("367623916056122557") ||
+                    productCategoryKey.contains("8630661440905874922") ||
+                    productCategoryKey.contains("3377714364674094217"))
+                continue;
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();
             String taxType = root.getJurisdictionTreatmentMappings().get(i).getTaxType();
@@ -139,8 +146,10 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                 }
             }
             for(String address:jurisdictionHashMap.get(jurisdictionKey)){
+
                 keys= productHashMap.get(productCategoryKey) + ":" + address + ":" + taxType;
                 treatmentComaparator.put(keys, value);
+
             }
 
         }
