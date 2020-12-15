@@ -156,17 +156,17 @@ public class Controller {
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
 ////        multiValuedMap.put("VTest%20Industries", testVTest);
 //         multiValuedMap.put("01_Wayfair_US",wayFairextracts);
-//         multiValuedMap.put("VTest%20Industries", vTestExtracts);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+         multiValuedMap.put("VTest%20Industries", vTestExtracts);
+        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
         multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
 //       multiValuedMap.put("01_Wayfair_US", testCE570);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
-//        multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
+        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
+        multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //       multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
 //       multiValuedMap.put("01_Wayfair_US", authorityDisabled)
 //       multiValuedMap.put("01_Wayfair_US", maxAmountExtract);
 //    multiValuedMap.put("01_Wayfair_US", testDC);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
+
 
 
         for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){

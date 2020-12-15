@@ -221,11 +221,11 @@ public class ExtractFetch {
 
         MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
-////        multiValuedMap.put("VTest%20Industries", testVTest);
+//        multiValuedMap.put("VTest%20Industries", testVTest);
 //        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
-        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
+//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
 //        multiValuedMap.put("VTest%20Industries", vTestExtracts);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
 //        multiValuedMap.put("01_Wayfair_US", test570);
 //      multiValuedMap.put("VTest%20Industrie s", wayfairRandomTest);
 ////        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
@@ -240,8 +240,8 @@ public class ExtractFetch {
 
                     File outputfile= new File("C:\\dell\\regression\\SAT\\CE_Execution.txt");
 
-                   ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
-                   //ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
+                //ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
+                 ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
                     runExtract(responseEntity2, extractName, "new");
 
                 } catch (Exception e) {

@@ -158,6 +158,30 @@ public class CompareExtractData {
                     "WayfairUAT_10_FL_622",
                     "WayfairUAT_45_UT_622").collect(Collectors.toList());
 
+            List<String> testToryBurch_838=  Stream.of(
+                    "TB_AllFlagged_885" ,
+                    "TB_FewFlags_885" ,
+                    "TB_FewFlags_886" ,
+                    "TB_Range_884" ,
+                    "TB_Range_885" ,
+                    "TB_Range_886" ,
+                    "TB_AllFlagged_884" ,
+                    "TB_AllFlagged_886" ,
+                    "TB_FewFlags_884"
+            ).collect(Collectors.toList());
+
+            List<String> testToryBurch_825=  Stream.of(
+                    "TB_825_NNN" ,
+                    "TB_825_NNY" ,
+                    "TB_825_NYN" ,
+                    "TB_825_NYY" ,
+                    "TB_825_YNN" ,
+                    "TB_825_YNY" ,
+                    "TB_825_YYN" ,
+                    "TB_825_YYY"
+            ).collect(Collectors.toList());
+
+
             List<String> testVTest = Stream.of("VTestVE-AllAddress_622").collect(Collectors.toList());
 
             List<String> testWayfairService=  Stream.of("WayfairUAT_57_TN_SERVICES").collect(Collectors.toList());
@@ -175,13 +199,15 @@ public class CompareExtractData {
 //            multiValuedMap.put("Store", extractStore);
             multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
             multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
+            multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
+            multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //            multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
             //map.put("01_Wayfair_US", test427);
 //        map.put("01_Wayfair_US", testTN);
 //            multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
 
-            String filePath1= "C:\\dell\\regression\\QA2\\categoryName\\";
-            String filePath2= "C:\\dell\\regression\\SAT\\categoryName\\";
+            String filePath1= "C:\\dell\\regression\\SAT\\categoryName\\";
+            String filePath2= "C:\\dell\\regression\\1023N995N956\\categoryName\\";
             for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
                 for(String extractName : entries.getValue())
                 {
