@@ -18,8 +18,8 @@ public class CompareValidatorResults {
 
     public static void main(String a[]) {
         try {
-            String newJarFile= new String("C:\\dell\\functional\\966\\" + "TX_QA.json");
-            String oldJarFile= new String("C:\\dell\\functional\\966\\" + "TX_SAT.json");
+            String newJarFile= new String("C:\\Users\\C269865\\IdeaProjects\\trta-idpt_extract-validator\\build\\libs\\" + "ToryBurchMainExtract_Result_QA.json");
+            String oldJarFile= new String("C:\\Users\\C269865\\IdeaProjects\\trta-idpt_extract-validator\\build\\libs\\" + "ToryBurchMainExtract_Result_SAT.json");
 
             MultiValuedMap<String,String> newJarMapResult = createMap(newJarFile);
             MultiValuedMap<String,String> oldJarMapResult= createMap(oldJarFile);

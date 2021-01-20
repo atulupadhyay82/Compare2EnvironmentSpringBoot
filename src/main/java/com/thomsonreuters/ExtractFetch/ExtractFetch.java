@@ -57,7 +57,7 @@ public class ExtractFetch {
         String password4 = "w@f@1r19";
         ObjectMapper mapper = new ObjectMapper();
 
-        //sat environment
+        //QA environment
         String uri_5 = "https://cre-api-qa.onesourcetax.com/";
         String userName5 = "^elvis-rest-client";
         String password5 = "password";
@@ -88,7 +88,8 @@ public class ExtractFetch {
                 "Wish_UAT_Full_Test_DEFAULT_MAPPING",
                 "Wish_UAT_Medium_Test_DEFAULT_MAPPING",
                 "Wish_UAT_PORTUGAL_TEST",
-                "Wish_UAT_Switzerland_Test_2").collect(Collectors.toList());
+                "Wish_UAT_Switzerland_Test_2",
+                "ExtractTest").collect(Collectors.toList());
 
         List<String> vTestExtracts = Stream.of(
                 "VTest%20AL%20Tax%20Holiday",
@@ -169,6 +170,34 @@ public class ExtractFetch {
                 "WayfairUAT_available2"
         ).collect(Collectors.toList());
 
+        List<String> hugoBossExtracts = Stream.of(
+                "XStoreExtract").collect(Collectors.toList());
+
+        List<String> quikTripExtracts = Stream.of(
+                "TX%20Restaurant",
+                "Non%20Restaurant",
+                "NonRestaurantTaxType"
+        ).collect(Collectors.toList());
+
+        List<String> acmeExtracts = Stream.of(
+                "Dell-CN",
+                "Dell-IN",
+                "Dell-US",
+                "Dell-UK").collect(Collectors.toList());
+
+        List<String> kpmgExtracts = Stream.of(
+                "KPMG_UAT_RXC_01_MO").collect(Collectors.toList());
+
+        List<String> seveenElevenExtracts = Stream.of(
+                "seveneleven-small",
+                "SevenElevenCanada").collect(Collectors.toList());
+
+        List<String> sdiUSAExtracts = Stream.of(
+                "main").collect(Collectors.toList());
+
+        List<String> wishLogisticsExtracts = Stream.of(
+                "ExtractTest").collect(Collectors.toList());
+
         List<String> test570 = Stream.of(
                 "AZ_570_T703",
                 "AZ_570_T704",
@@ -184,10 +213,9 @@ public class ExtractFetch {
                 "Wayfair_Test_AZ_570",
                 "AZ_570_T736").collect(Collectors.toList());
 
-        List<String> test427 = Stream.of(
-                "WayfairUAT_44_TX").collect(Collectors.toList());
 
-        List<String> testWayfairGoods=  Stream.of("WayfairUAT_56_TN_GOODS").collect(Collectors.toList());
+
+        List<String> expediaExtracts=  Stream.of("expediaFranceExtract").collect(Collectors.toList());
 
         List<String> wayfairRandomTest = Stream.of("Max_Amount_Extract_Authority","Max_Amount_Extract_TaxType").collect(Collectors.toList());
 
@@ -215,33 +243,52 @@ public class ExtractFetch {
                 "TB_825_YYY"
         ).collect(Collectors.toList());
 
-        List<String> testToryBurch=  Stream.of("ToryBurchMainExtract").collect(Collectors.toList());
+        List<String> testToryBurch=  Stream.of( "ToryBurchMainExtract"
+                                             ).collect(Collectors.toList());
 
 
 
         MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
 //        multiValuedMap.put("VTest%20Industries", testVTest);
+
+     multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
 //        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
-//        multiValuedMap.put("VTest%20Industries", vTestExtracts);
-        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+        multiValuedMap.put("VTest%20Industries", vTestExtracts);
+//        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+//        multiValuedMap.put("Hugo%20Boss%20Retail%20Inc",hugoBossExtracts);
+        multiValuedMap.put("ACME%20Company",acmeExtracts);
+        multiValuedMap.put("ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT",seveenElevenExtracts);
+//        multiValuedMap.put("RxConnect",kpmgExtracts);
+//        multiValuedMap.put("zz%20-%20Acct%20-%20SDI%20USA",sdiUSAExtracts);
+//        multiValuedMap.put("WISH%20Logistics%20B.V.",wishLogisticsExtracts);
+        multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
+//        multiValuedMap.put("Expedia",expediaExtracts);
+
+//        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
+//        multiValuedMap.put("ACME%20Company",acmeExtracts);
+//        multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
+
 //        multiValuedMap.put("01_Wayfair_US", test570);
 //      multiValuedMap.put("VTest%20Industrie s", wayfairRandomTest);
 ////        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
 //        multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //        multiValuedMap.put("01_Wayfair_US", testTN);
-
+        ResponseEntity<String> responseEntity2;
        for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
             for(String extractName : entries.getValue())
             {
                 try {
 
-                    File outputfile= new File("C:\\dell\\regression\\SAT\\CE_Execution.txt");
+                    File outputfile= new File("C:\\dell\\regression\\SAT2\\CE_Execution.txt");
+                    if(extractName.contains("Wish") || extractName.contains("ExtractTest")){
+                        responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
+                    }
+                    else{
+                        responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
+                    }
 
-                //ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
-                 ResponseEntity<String> responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
                     runExtract(responseEntity2, extractName, "new");
 
                 } catch (Exception e) {
@@ -263,7 +310,7 @@ public class ExtractFetch {
 //        jSONObject.remove("extractDate");
 //        jSONObject.remove("contentVersion");
 
-        Files.write(Paths.get("C:\\dell\\regression\\SAT\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
+        Files.write(Paths.get("C:\\dell\\regression\\SAT2\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
         String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\funtional\\825\\" + extractName + "_" + env + ".json C:\\dell\\functional\\825\\sorted\\" + extractName + "_sorted_" + env + ".json";
 
 

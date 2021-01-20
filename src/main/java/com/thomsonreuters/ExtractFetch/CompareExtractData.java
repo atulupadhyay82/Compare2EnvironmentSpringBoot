@@ -31,11 +31,11 @@ public class CompareExtractData {
             List<String> noMatch = new ArrayList<>();
 
             List<String> vTestExtracts = Stream.of(
-                    "VTest%20AL%20Tax%20Holiday",
-                    "VTest%20Main%20Range",
-                    "VTest%20Rule%20Range%20Error",
-                    "VTest%20Rule%20Range%20Error",
-                    "VTest%20Tiers",
+                    "VTest AL Tax Holiday",
+                    "VTest Main Range",
+                    "VTest Rule Range Error",
+                    "VTest Rule Range Error",
+                    "VTest Tiers",
                     "VTestVE-AllAddress",
                     "VTestVE-Authority",
                     "VTestVE-AuthorityType",
@@ -114,6 +114,35 @@ public class CompareExtractData {
                     "Wish_UAT_PORTUGAL_TEST",
                     "Wish_UAT_Switzerland_Test_2").collect(Collectors.toList());
 
+            List<String> hugoBossExtracts = Stream.of(
+                    "XStoreExtract").collect(Collectors.toList());
+
+            List<String> quikTripExtracts = Stream.of(
+                    "TX Restaurant",
+                    "Non Restaurant",
+                    "NonRestaurantTaxType"
+            ).collect(Collectors.toList());
+
+            List<String> acmeExtracts = Stream.of(
+                    "Dell-CN",
+                    "Dell-IN",
+                    "Dell-US",
+                    "Dell-UK").collect(Collectors.toList());
+
+            List<String> kpmgExtracts = Stream.of(
+                    "KPMG_UAT_RXC_01_MO").collect(Collectors.toList());
+
+            List<String> seveenElevenExtracts = Stream.of(
+                    "SevenElevenCanada").collect(Collectors.toList());
+
+            List<String> sdiUSAExtracts = Stream.of(
+                    "main").collect(Collectors.toList());
+
+            List<String> wishLogisticsExtracts = Stream.of(
+                    "ExtractTest").collect(Collectors.toList());
+
+            List<String> expediaExtracts=  Stream.of("expediaFranceExtract").collect(Collectors.toList());
+
             List<String> testCE570 = Stream.of(
                     "AZ_570_T703",
                     "AZ_570_T704",
@@ -191,23 +220,32 @@ public class CompareExtractData {
             List<String> wayfairRandomTest = Stream.of("WayfairUAT_05_CA","WayfairUAT_07_CT","WayfairUAT_40_RI","WayfairUAT_40B_RI").collect(Collectors.toList());
 
             MultiValuedMap<String, Collection<String>> multiValuedMap = new ArrayListValuedHashMap<String, Collection<String>>();
-//            multiValuedMap.put("01_Wayfair_US", testWayfair);
-//            multiValuedMap.put("VTest%20Industries", testVTest);
+            multiValuedMap.put("01_Wayfair_US", testWayfair);
+            multiValuedMap.put("VTest%20Industries", testVTest);
             multiValuedMap.put("01_Wayfair_US", wayFairextracts);
             multiValuedMap.put("VTest%20Industries", vTestExtracts);
-//            multiValuedMap.put("01_Wayfair_US", testCE570);
-//            multiValuedMap.put("Store", extractStore);
+            multiValuedMap.put("01_Wayfair_US", testCE570);
+            multiValuedMap.put("Store", extractStore);
             multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
             multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
-            multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
-            multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
+            multiValuedMap.put("Hugo%20Boss%20Retail%20Inc",hugoBossExtracts);
+            multiValuedMap.put("ACME%20Company",acmeExtracts);
+            multiValuedMap.put("ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT",seveenElevenExtracts);
+            multiValuedMap.put("RxConnect",kpmgExtracts);
+            multiValuedMap.put("zz%20-%20Acct%20-%20SDI%20USA",sdiUSAExtracts);
+            multiValuedMap.put("WISH%20Logistics%20B.V.",wishLogisticsExtracts);
+            multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
+
+//        multiValuedMap.put("Expedia",expediaExtracts);
+//            multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
+//            multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //            multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
             //map.put("01_Wayfair_US", test427);
 //        map.put("01_Wayfair_US", testTN);
 //            multiValuedMap.put("01_Wayfair_US", wayfairRandomTest);
 
-            String filePath1= "C:\\dell\\regression\\SAT\\categoryName\\";
-            String filePath2= "C:\\dell\\regression\\1023N995N956\\categoryName\\";
+            String filePath1= "C:\\dell\\regression\\1075\\categoryName\\";  // previous release data
+            String filePath2= "C:\\dell\\regression\\SAT2\\categoryName\\";  //current story data changes
             for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
                 for(String extractName : entries.getValue())
                 {

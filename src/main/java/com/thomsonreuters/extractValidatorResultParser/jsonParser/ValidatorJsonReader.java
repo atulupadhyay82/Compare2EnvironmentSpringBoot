@@ -50,7 +50,7 @@ public class ValidatorJsonReader {
         DecimalFormat df2 = new DecimalFormat();
        int count=0;
         for (MainResult result : results) {
-               if (result.getTestResult().contains("FAIL") || result.getTestResult().contains("PASS") ) {
+               if (result.getTestResult().contains("FAIL")) {
 
 //                    failedJurisdiction.add(result.getJurisdiction());
 

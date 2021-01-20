@@ -75,9 +75,12 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey {
     void treatmentHashMapGenerator() {
 
         for (Treatment t : root.getTreatments()) {
-            if (t.getSplitType() == null || t.getSplitType().equalsIgnoreCase("T"))  {
+            if ((t.getSplitType() == null || t.getSplitType().equalsIgnoreCase("T")) && t.getFee() == null) {
                 treatmentHashMapRate.put(t.getTreatmentKey(), t.getRate());
-            } else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
+            }else if(t.getFee() != null && t.getSplitType()==null && t.getRate()== null){
+                treatmentHashMapRate.put(t.getTreatmentKey(), t.getFee());
+                //System.out.println(t.getFee());
+            }else if (t.getSplitType().equalsIgnoreCase("R") || t.getSplitType().equalsIgnoreCase("G")) {
                 String tierStr = "Tiers:";
                 String tempStr="";
                 TreeMap<Long, String> tierData= new TreeMap<>();

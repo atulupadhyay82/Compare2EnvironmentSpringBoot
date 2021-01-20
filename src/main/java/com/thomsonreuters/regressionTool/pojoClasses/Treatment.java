@@ -23,6 +23,18 @@ public class Treatment {
     private String mTreatmentKey;
     @SerializedName("rate")
     private Double mRate;
+    @SerializedName("fee")
+    private Double mFee;
+
+    public Double getFee() {
+        return mFee;
+    }
+
+    public void setFee(Double Fee) {
+        this.mFee = Fee;
+    }
+
+
 
     public String getCalculationMethod() {
         return mCalculationMethod;
