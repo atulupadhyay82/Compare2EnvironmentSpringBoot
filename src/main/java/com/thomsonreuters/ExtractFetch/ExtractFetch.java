@@ -89,7 +89,7 @@ public class ExtractFetch {
                 "Wish_UAT_Medium_Test_DEFAULT_MAPPING",
                 "Wish_UAT_PORTUGAL_TEST",
                 "Wish_UAT_Switzerland_Test_2",
-                "ExtractTest").collect(Collectors.toList());
+                "ExtractTest_Wish").collect(Collectors.toList());
 
         List<String> vTestExtracts = Stream.of(
                 "VTest%20AL%20Tax%20Holiday",
@@ -176,7 +176,10 @@ public class ExtractFetch {
         List<String> quikTripExtracts = Stream.of(
                 "TX%20Restaurant",
                 "Non%20Restaurant",
-                "NonRestaurantTaxType"
+                "NonRestaurantTaxType",
+                "Non%20Restaurant_1071",
+                "NonRestaurantTaxType_1071"
+
         ).collect(Collectors.toList());
 
         List<String> acmeExtracts = Stream.of(
@@ -243,7 +246,7 @@ public class ExtractFetch {
                 "TB_825_YYY"
         ).collect(Collectors.toList());
 
-        List<String> testToryBurch=  Stream.of( "ToryBurchMainExtract"
+        List<String> testToryBurch=  Stream.of( "ToryBurchMainExtract", "ToryBurchExtract_CE995"
                                              ).collect(Collectors.toList());
 
 
@@ -252,41 +255,39 @@ public class ExtractFetch {
 //        multiValuedMap.put("01_Wayfair_US", testWayfair);
 //        multiValuedMap.put("VTest%20Industries", testVTest);
 
-     multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
+//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch);
 //        multiValuedMap.put("01_Wayfair_US", wayFairextracts);
-        multiValuedMap.put("VTest%20Industries", vTestExtracts);
+//        multiValuedMap.put("VTest%20Industries", vTestExtracts);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
 //        multiValuedMap.put("Hugo%20Boss%20Retail%20Inc",hugoBossExtracts);
-        multiValuedMap.put("ACME%20Company",acmeExtracts);
-        multiValuedMap.put("ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT",seveenElevenExtracts);
+//        multiValuedMap.put("ACME%20Company",acmeExtracts);
+//        multiValuedMap.put("ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT",seveenElevenExtracts);
 //        multiValuedMap.put("RxConnect",kpmgExtracts);
 //        multiValuedMap.put("zz%20-%20Acct%20-%20SDI%20USA",sdiUSAExtracts);
 //        multiValuedMap.put("WISH%20Logistics%20B.V.",wishLogisticsExtracts);
-        multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
+//        multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
 //        multiValuedMap.put("Expedia",expediaExtracts);
 
-//        multiValuedMap.put("zz%20-%20Acct%20-%20WISH",wishTestExtracts);
-//        multiValuedMap.put("ACME%20Company",acmeExtracts);
-//        multiValuedMap.put("QUIKTRIP%20CORPORATION",quikTripExtracts);
 
 //        multiValuedMap.put("01_Wayfair_US", test570);
-//      multiValuedMap.put("VTest%20Industrie s", wayfairRandomTest);
-////        multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
-//        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
+//        multiValuedMap.put("VTest%20Industrie s", wayfairRandomTest);
+//      multiValuedMap.put("01s_Wayfair_FL_TN_Services",testWayfairService);
+        multiValuedMap.put("zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT", testToryBurch_825);
 //        multiValuedMap.put("01_Wayfair_US", testToryBurch_838);
 //        multiValuedMap.put("01_Wayfair_US", testTN);
+
         ResponseEntity<String> responseEntity2;
        for(Map.Entry<String, Collection<String>> entries:multiValuedMap.entries() ){
             for(String extractName : entries.getValue())
             {
                 try {
 
-                    File outputfile= new File("C:\\dell\\regression\\SAT2\\CE_Execution.txt");
-                    if(extractName.contains("Wish") || extractName.contains("ExtractTest")){
+                    File outputfile= new File("C:\\dell\\regression\\SAT3\\CE_Execution.txt");
+                    if(extractName.contains("Wish") ){
                         responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3_WISH, password3_WISH, headerName,outputfile);
                     }
                     else{
-                        responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName2, password3, headerName,outputfile);
+                        responseEntity2 = getStringResponseEntity(uri_3, entries.getKey(), extractName, userName3, password3, headerName,outputfile);
                     }
 
                     runExtract(responseEntity2, extractName, "new");
@@ -310,7 +311,7 @@ public class ExtractFetch {
 //        jSONObject.remove("extractDate");
 //        jSONObject.remove("contentVersion");
 
-        Files.write(Paths.get("C:\\dell\\regression\\SAT2\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
+        Files.write(Paths.get("C:\\dell\\regression\\SAT3\\" + extractName + "_" + env + ".json"), jSONObject.toString().getBytes(StandardCharsets.UTF_8));
         String sort_json = "python C:\\Users\\C269865\\projects\\sort_json.py C:\\dell\\funtional\\825\\" + extractName + "_" + env + ".json C:\\dell\\functional\\825\\sorted\\" + extractName + "_sorted_" + env + ".json";
 
 

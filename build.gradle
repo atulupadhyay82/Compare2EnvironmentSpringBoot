@@ -1,11 +1,13 @@
-plugins {
-    id 'java'
-}
+apply plugin: "application"
+
+mainClassName = "com.thomsonreuters.ExtractFetch.ExtractFetch"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 
 group 'com.thomsonreuters'
 version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
 
 repositories {
     maven {
@@ -51,11 +53,4 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-
-
-
-
-
-
-
 }
