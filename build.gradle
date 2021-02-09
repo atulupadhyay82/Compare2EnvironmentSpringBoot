@@ -11,10 +11,10 @@ version '1.0-SNAPSHOT'
 
 repositories {
     maven {
-        url "${artifactoryBaseUrl}/libs-release"
+        url "https://tr1.jfrog.io/ui/packages/libs-release"
         credentials {
-            username "${bamsUser}"
-            password "${bamsPassword}"
+            username "C253334"
+            password "Conquer#2021"
         }
     }
 }
