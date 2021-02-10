@@ -1,0 +1,46 @@
+# Tomcat port:
+server.port: 8101
+server.address: 0.0.0.0
+
+spring.datasource.url: jdbc:oracle:thin:@//10.226.80.6:1521/ord1208a.A008954398186.amazonaws.com
+spring.datasource.driverClassName: oracle.jdbc.driver.OracleDriver
+spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.Oracle12cDialect
+spring.datasource.username: REC_A_001_002
+spring.datasource.password: REC_A_001_002
+
+#spring.datasource.username: RECOP_A_001_002
+#spring.datasource.password: RECOP_A_001_002
+
+#spring.datasource.username: REC_U_002_082
+#spring.datasource.password: IDT_W0rld_4_Tax2
+
+# Logging
+logging.level.org.springframework.web: INFO
+
+# Actuator
+actuatorAuth:
+  enabled: true
+  userName: admin
+  password: Password1
+
+# Scheduling
+cron.expression: 0 29 2 * * ?
+#cron.expression: 0 0 0/5 * * ?
+
+switch.filter.location.flag: true
+
+switch.admin.auth.flag: false
+
+switch.rules.flag: true
+
+
+com.thomsonreuters.contentextract.staging.domain.domainservices.stagingroottreatmentsservice: DEBUG
+
+#increase batch size to avoid table space issue
+spring.jpa.properties.hibernate.jdbc.batch_size: 20
+
+stagingProcessLimits:
+  includeDefaultConfig: false
+  bigExtracts:
+    -
+      states: -1

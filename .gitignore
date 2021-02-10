@@ -1,6 +1,7 @@
 .gradle
 /build/
-/src/main/resources/
+/src/main/resources/excelSheets
+/src/main/resources/jsonFiles
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
