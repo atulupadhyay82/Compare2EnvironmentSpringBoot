@@ -10,44 +10,26 @@ import java.io.FileReader;
 
 public class JsonReader {
 
-    JsonReader(File jsonFile,String runType) throws Exception {
-        jsonReader(jsonFile,runType);
-    }
+    public static File getProcessedJson(String jsonFile, String env) throws Exception {
 
-    public void jsonReader(File jsonFile,String runType) throws Exception {
-
-        JSONParser parser = new JSONParser();
-        FileReader fileReader = null;
-        JSONObject json = null;
-
-
-            fileReader = new FileReader(jsonFile);
-            json = (JSONObject) parser.parse(fileReader);
-
-            String str = json.toString();
             Gson gson = new Gson();
-            Root root = gson.fromJson(str, Root.class);
+            File processedExtract =null;
+            Root root = gson.fromJson(jsonFile, Root.class);
             if (root.getGroupingRule().equalsIgnoreCase("taxType")) {
-                if (runType.contains("CategoryKey"))
-                    new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryKey(root);
-                else if (runType.contains("CategoryName"))
-                    new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(root);
-                //new HashMapGeneratorGroupByTaxType(root);
+                processedExtract= new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(root).hashMapGenerator(env);
 
             } else if (root.getGroupingRule().equalsIgnoreCase("authority")) {
                 //new HashMapGeneratorGroupByAuthority(root);
-                if (runType.contains("CategoryKey"))
-                    new HashMapForTreatmentComparsionByAuthorityAndProductCategoryKey(root);
-                else if (runType.contains("CategoryName"))
-                    new HashMapForTreatmentComparsionByAuthorityAndProductCategoryName(root);
+                processedExtract=  new HashMapForTreatmentComparsionByAuthorityAndProductCategoryName(root).hashMapGenerator(env);
 
             }
-            else if (root.getGroupingRule().equalsIgnoreCase("authorityType")) {
-                new HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey(root);
-            }
-            if(root.getmLocations()!=null){
-                new StoreMapper(root);
-            }
+//            else if (root.getGroupingRule().equalsIgnoreCase("authorityType")) {
+//                new HashMapForTreatmentComparsionByAuthorityTypeAndProductCategoryKey(root);
+//            }
+//            if(root.getmLocations()!=null){
+//                new StoreMapper(root);
+//            }
+        return processedExtract;
 
     }
 

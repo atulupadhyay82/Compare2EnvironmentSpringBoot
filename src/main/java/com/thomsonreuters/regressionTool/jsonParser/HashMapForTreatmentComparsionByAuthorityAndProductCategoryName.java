@@ -1,7 +1,7 @@
 package com.thomsonreuters.regressionTool.jsonParser;
 
 
-import com.thomsonreuters.regressionTool.excelOperations.ExcelWriter;
+
 import com.thomsonreuters.regressionTool.pojoClasses.*;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
     Root root;
-    ExcelWriter excelWriter = new ExcelWriter();
+
     HashMap<String, String> productHashMap = new HashMap();
     HashMap<String, Double> treatmentHashMapRate = new HashMap<String, Double>();
     HashMap<String, String> authorityHashMap = new HashMap<String, String>();
@@ -25,20 +25,21 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
     public HashMapForTreatmentComparsionByAuthorityAndProductCategoryName(Root root) {
         this.root = root;
-        hashMapGenerator();
     }
 
-    public void hashMapGenerator() {
+    public File hashMapGenerator(String env) {
+        File outputFile=null;
         try {
             productHashMapGenerator();
             jurisdictionHashMapGenerator();
             authorityHashMapGenerator();
             jurisdictionAuthoritiesHashMapGenerator();
             treatmentHashMapGenerator();
-            authorityTreatmentMappingsExcelWriter();
+            outputFile=authorityTreatmentMappingsExcelWriter(env);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return outputFile;
     }
     void productHashMapGenerator() {
         for (Product p : root.getProducts()) {
@@ -97,8 +98,9 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
     }
 
-    void authorityTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
-        String fileName = root.getExtractName();
+    File authorityTreatmentMappingsExcelWriter(String env) throws IOException, InvalidFormatException {
+        String fileName = "Extract_" +env;
+        File resultFile=null;
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
         String keys, value;
 
@@ -153,22 +155,12 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
         Collections.sort(keylist);
 
         try {
-            File myObj = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        try {
-            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
+            resultFile = new File(System.getProperty("user.dir") + "/src/main/resources/jsonFiles/" + fileName + ".txt");
+            resultFile.createNewFile();
+            FileWriter myWriter = new FileWriter(resultFile);
             for (String key : keylist) {
                 Collection<String> values = treatmentComaparator.get(key);
-                //System.out.println(key +  " : " + treatmentComaparator.get(key));
+                // System.out.println(key +  " : " + treatmentComaparator.get(key));
                 List<String> valueList = new ArrayList<String>(treatmentComaparator.get(key));
                 Collections.sort(valueList);
                 myWriter.write(key + " : " + valueList);
@@ -179,7 +171,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-
+        return  resultFile;
     }
 
 

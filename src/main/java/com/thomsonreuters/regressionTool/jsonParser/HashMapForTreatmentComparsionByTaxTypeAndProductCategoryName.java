@@ -20,21 +20,24 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     MultiValuedMap<String, String> jurisdictionHashMap = new ArrayListValuedHashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
+
     public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(Root root) {
         this.root = root;
-        hashMapGenerator();
     }
 
-    public void hashMapGenerator() {
+    public File hashMapGenerator(String env) {
+        File ouptutFile=null;
         try {
             productHashMapGenerator();
             treatmentGroupHashMapGenerator();
             treatmentHashMapGenerator();
             jurisdictionHashMapGenerator();
-            jurisdictionTreatmentMappingsExcelWriter();
+            ouptutFile=jurisdictionTreatmentMappingsExcelWriter(env);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return ouptutFile;
     }
 
 
@@ -42,8 +45,6 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         for (TreatmentGroupTreatment t : root.getTreatmentGroupTreatments()) {
             treatmentGroupHashMap.put(t.getTreatmentGroupKey(), t.getTreatmentKey());
         }
-
-
     }
 
     void treatmentHashMapGenerator() {
@@ -95,8 +96,9 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
      // System.out.println(jurisdictionHashMap);
     }
 
-    void jurisdictionTreatmentMappingsExcelWriter() throws IOException, InvalidFormatException {
-        String fileName = root.getExtractName();
+     File jurisdictionTreatmentMappingsExcelWriter(String env) throws IOException, InvalidFormatException {
+        String fileName = "Extract_" +env;
+        File resultFile=null;
 
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
         String keys, value;
@@ -164,20 +166,9 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         Collections.sort(keylist);
 
         try {
-            File myObj = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        // System.out.println(key +  " : " + treatmentComaparator.get(key));
-        try {
-            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\jsonFiles\\" + fileName + ".txt");
+            resultFile = new File(System.getProperty("user.dir") + "/src/main/resources/jsonFiles/" + fileName + ".txt");
+            resultFile.createNewFile();
+            FileWriter myWriter = new FileWriter(resultFile);
             for (String key : keylist) {
                 Collection<String> values = treatmentComaparator.get(key);
                 // System.out.println(key +  " : " + treatmentComaparator.get(key));
@@ -191,10 +182,8 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-
+        return  resultFile;
     }
-
-
 }
 
 
