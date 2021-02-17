@@ -5,7 +5,7 @@ package com.thomsonreuters.regressionTool.jsonParser;
 import com.thomsonreuters.regressionTool.pojoClasses.*;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 
 import java.io.File;
 import java.io.FileWriter;
@@ -98,7 +98,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
     }
 
-    File authorityTreatmentMappingsExcelWriter(String env) throws IOException, InvalidFormatException {
+    File authorityTreatmentMappingsExcelWriter(String env) throws IOException {
         String fileName = "Extract_" +env;
         File resultFile=null;
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
