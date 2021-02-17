@@ -70,9 +70,10 @@ public class StagingService {
 
     public void waitForItsCompletionInQAEnv(Long extractID) {
 
-        while(!getStatusFromQAEnv(extractID).equalsIgnoreCase("Complete") ||
+        while(!getStatusFromQAEnv(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromQAEnv(extractID).equalsIgnoreCase("ERROR")){
             try {
+                System.out.println(extractID+" is still in "+ getStatusFromQAEnv(extractID)+" state");
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -82,9 +83,10 @@ public class StagingService {
     }
 
     public void waitForItsCompletionInSATEnv(Long extractID) {
-        while(!getStatusFromSATEnv(extractID).equalsIgnoreCase("Complete") ||
+        while(!getStatusFromSATEnv(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromSATEnv(extractID).equalsIgnoreCase("ERROR")){
             try {
+                System.out.println(extractID+" is still in "+getStatusFromQAEnv(extractID)+" state");
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
