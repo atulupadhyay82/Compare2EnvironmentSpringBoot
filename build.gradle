@@ -34,9 +34,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
-    // Lombok.
-    compile('org.projectlombok:lombok')
-    testCompile('org.projectlombok:lombok')
+    compileOnly('org.projectlombok:lombok')
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '16.0.1'

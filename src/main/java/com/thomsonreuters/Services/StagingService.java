@@ -1,10 +1,10 @@
 package com.thomsonreuters.Services;
 
 
-import com.thomsonreuters.repository.qa.QACfgExtractRepository;
-import com.thomsonreuters.repository.qa.QAStgExecutionRepository;
-import com.thomsonreuters.repository.sat.SATCfgExtractRepository;
-import com.thomsonreuters.repository.sat.SATStgExecutionRepository;
+import com.thomsonreuters.repository.env1.Env1CfgExtractRepository;
+import com.thomsonreuters.repository.env1.Env1StgExecutionRepository;
+import com.thomsonreuters.repository.env2.Env2CfgExtractRepository;
+import com.thomsonreuters.repository.env2.Env2StgExecutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,28 +26,28 @@ public class StagingService {
 
 
     @Autowired
-    private QACfgExtractRepository qaCfgExtractRepository;
+    private Env1CfgExtractRepository env1CfgExtractRepository;
 
     @Autowired
-    private QAStgExecutionRepository qaStgExecutionRepository;
+    private Env1StgExecutionRepository env1StgExecutionRepository;
 
     @Autowired
-    private SATCfgExtractRepository satCfgExtractRepository;
+    private Env2CfgExtractRepository env2CfgExtractRepository;
 
     @Autowired
-    private SATStgExecutionRepository satStgExecutionRepository;
+    private Env2StgExecutionRepository env2StgExecutionRepository;
 
     /**
      *
      * @param extractID
      * @return
      */
-    private String  getStatusFromQAEnv(Long extractID) {
-        return qaStgExecutionRepository.getStatus(extractID);
+    private String  getStatusFromEnv1(Long extractID) {
+        return env1StgExecutionRepository.getStatus(extractID);
     }
 
-    private String  getStatusFromSATEnv(Long extractID) {
-        return satStgExecutionRepository.getStatus(extractID);
+    private String  getStatusFromEnv2(Long extractID) {
+        return env2StgExecutionRepository.getStatus(extractID);
     }
 
     /**
@@ -55,12 +55,12 @@ public class StagingService {
      * @param extractName
      * @return
      */
-    public Long getExtractFromQAEnv(String extractName){
-        return qaCfgExtractRepository.getExtractID(extractName);
+    public Long getExtractFromEnv1(String extractName){
+        return env1CfgExtractRepository.getExtractID(extractName);
     }
 
-    public Long getExtractFromSATEnv(String extractName){
-        return satCfgExtractRepository.getExtractID(extractName);
+    public Long getExtractFromEnv2(String extractName){
+        return env2CfgExtractRepository.getExtractID(extractName);
     }
 
     public void triggerStaging(String URL, String username, String password, Long extractID, String env) throws URISyntaxException {
@@ -68,31 +68,31 @@ public class StagingService {
         System.out.println(response);
     }
 
-    public void waitForItsCompletionInQAEnv(Long extractID) {
+    public void waitForItsCompletionInEnv1(Long extractID, String env) {
 
-        while(!getStatusFromQAEnv(extractID).equalsIgnoreCase("Complete") &&
-                !getStatusFromQAEnv(extractID).equalsIgnoreCase("ERROR")){
+        while(!getStatusFromEnv1(extractID).equalsIgnoreCase("Complete") &&
+                !getStatusFromEnv1(extractID).equalsIgnoreCase("ERROR")){
             try {
-                System.out.println(extractID+" is still in "+ getStatusFromQAEnv(extractID)+" state");
+                System.out.println(extractID+" is still in "+ getStatusFromEnv1(extractID)+" state in "+env);
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(extractID+" is completed now in QA");
+        System.out.println(extractID+" is completed now in "+env);
     }
 
-    public void waitForItsCompletionInSATEnv(Long extractID) {
-        while(!getStatusFromSATEnv(extractID).equalsIgnoreCase("Complete") &&
-                !getStatusFromSATEnv(extractID).equalsIgnoreCase("ERROR")){
+    public void waitForItsCompletionInEnv2(Long extractID, String env) {
+        while(!getStatusFromEnv2(extractID).equalsIgnoreCase("Complete") &&
+                !getStatusFromEnv2(extractID).equalsIgnoreCase("ERROR")){
             try {
-                System.out.println(extractID+" is still in "+getStatusFromQAEnv(extractID)+" state");
+                System.out.println(extractID+" is still in "+getStatusFromEnv2(extractID)+" state in "+env);
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(extractID+" is completed now in QA");
+        System.out.println(extractID+" is completed now in "+env);
 
     }
 

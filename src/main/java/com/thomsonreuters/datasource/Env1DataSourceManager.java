@@ -22,11 +22,11 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.thomsonreuters.repository.qa",
-        entityManagerFactoryRef = "qaEntityManager",
-        transactionManagerRef = "qaTransactionManager"
+        basePackages = "com.thomsonreuters.repository.env1",
+        entityManagerFactoryRef = "env1EntityManager",
+        transactionManagerRef = "env1TransactionManager"
 )
-public class QADataSourceManager {
+public class Env1DataSourceManager {
 
     @Autowired
     private Environment env;
@@ -35,9 +35,9 @@ public class QADataSourceManager {
 
     @Bean
     @Primary
-    public LocalContainerEntityManagerFactoryBean qaEntityManager() {
+    public LocalContainerEntityManagerFactoryBean env1EntityManager() {
         LocalContainerEntityManagerFactoryBean em= new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(qaDataSource());
+        em.setDataSource(env1DataSource());
         em.setPackagesToScan(new String[] { "com.thomsonreuters.entities" });
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -50,26 +50,26 @@ public class QADataSourceManager {
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource.qa")
-    public DataSourceProperties qaDataSourceProperties() {
+    @ConfigurationProperties("spring.datasource.env1")
+    public DataSourceProperties env1DataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Primary
     @Bean
-    @ConfigurationProperties(prefix="spring.datasource.qa.configuration")
-    public DataSource qaDataSource() {
-        return qaDataSourceProperties().initializeDataSourceBuilder()
+    @ConfigurationProperties(prefix="spring.datasource.env1.configuration")
+    public DataSource env1DataSource() {
+        return env1DataSourceProperties().initializeDataSourceBuilder()
                 .type(HikariDataSource.class).build();
     }
 
 
     @Primary
     @Bean
-    public PlatformTransactionManager qaTransactionManager() {
+    public PlatformTransactionManager env1TransactionManager() {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(qaEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(env1EntityManager().getObject());
         return transactionManager;
     }
 }

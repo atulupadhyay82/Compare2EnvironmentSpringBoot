@@ -1,4 +1,4 @@
-package com.thomsonreuters.repository.qa;
+package com.thomsonreuters.repository.env1;
 
 import com.thomsonreuters.entities.StgExecutions;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,13 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository(QAStgExecutionRepository.BEAN_NAME)
-public interface QAStgExecutionRepository extends JpaRepository<StgExecutions,Long> {
+@Repository(Env1StgExecutionRepository.BEAN_NAME)
+public interface Env1StgExecutionRepository extends JpaRepository<StgExecutions,Long> {
 
     /**
      * Denotes the bean name for this component
      */
-    public static final String BEAN_NAME = "QAStgExecutionRepository";
+    public static final String BEAN_NAME = "Env1StgExecutionRepository";
 
     /**
      * Retreive taxtype from the database for the extract

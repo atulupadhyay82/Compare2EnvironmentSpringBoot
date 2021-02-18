@@ -1,4 +1,4 @@
-package com.thomsonreuters.repository.sat;
+package com.thomsonreuters.repository.env2;
 
 import com.thomsonreuters.entities.StgExecutions;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,13 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository(SATStgExecutionRepository.BEAN_NAME)
-public interface SATStgExecutionRepository extends JpaRepository<StgExecutions,Long> {
+@Repository(Env2StgExecutionRepository.BEAN_NAME)
+public interface Env2StgExecutionRepository extends JpaRepository<StgExecutions,Long> {
 
     /**
      * Denotes the bean name for this component
      */
-    public static final String BEAN_NAME = "SATStgExecutionDao";
+    public static final String BEAN_NAME = "Env2StgExecutionRepository";
 
     /**
      * Retreive taxtype from the database for the extract

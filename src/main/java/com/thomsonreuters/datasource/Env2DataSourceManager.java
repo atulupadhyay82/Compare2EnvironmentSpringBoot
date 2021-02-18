@@ -28,20 +28,20 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.thomsonreuters.repository.sat",
-        entityManagerFactoryRef = "satEntityManager",
-        transactionManagerRef = "satTransactionManager"
+        basePackages = "com.thomsonreuters.repository.env2",
+        entityManagerFactoryRef = "env2EntityManager",
+        transactionManagerRef = "env2TransactionManager"
 )
-public class SATDataSourceManager {
+public class Env2DataSourceManager {
 
     @Autowired
     private Environment env;
 
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean satEntityManager() {
+    public LocalContainerEntityManagerFactoryBean env2EntityManager() {
         LocalContainerEntityManagerFactoryBean em= new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(satDataSource());
+        em.setDataSource(env2DataSource());
         em.setPackagesToScan(new String[] { "com.thomsonreuters.entities" });
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -55,23 +55,23 @@ public class SATDataSourceManager {
 
 
     @Bean
-    @ConfigurationProperties("spring.datasource.sat")
-    public DataSourceProperties satDataSourceProperties() {
+    @ConfigurationProperties("spring.datasource.env2")
+    public DataSourceProperties env2DataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Primary
     @Bean
-    @ConfigurationProperties(prefix="spring.datasource.sat.configuration")
-    public DataSource satDataSource() {
-        return satDataSourceProperties().initializeDataSourceBuilder()
+    @ConfigurationProperties(prefix="spring.datasource.env2.configuration")
+    public DataSource env2DataSource() {
+        return env2DataSourceProperties().initializeDataSourceBuilder()
                 .type(HikariDataSource.class).build();
     }
     @Bean
-    public PlatformTransactionManager satTransactionManager() {
+    public PlatformTransactionManager env2TransactionManager() {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(satEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(env2EntityManager().getObject());
         return transactionManager;
     }
 }
