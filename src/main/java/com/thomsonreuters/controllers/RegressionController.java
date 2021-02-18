@@ -23,23 +23,9 @@ public class RegressionController {
 
     @RequestMapping(method = RequestMethod.POST, value="/compareExtract")
     public TestResult compareExtract(@RequestBody TestCase testcase) throws IOException, URISyntaxException {
-        HashMap<String, String> result= runStaging.compareExtractData(testcase.getCompanyName(), testcase.getExtractName());
-        TestResult testResult=new TestResult();
-        printResult(testResult, result);
-        return testResult;
+        TestResult result= runStaging.compareExtractData(testcase.getCompanyName(), testcase.getExtractName());
+        return result;
     }
 
-    private static void printResult(TestResult testResult, HashMap<String, String> result) {
-        Iterator hmIterator = result.entrySet().iterator();
 
-        // Iterate through the hashmap and add some bonus marks for every student
-        while (hmIterator.hasNext()) {
-
-            Map.Entry mapElement = (Map.Entry)hmIterator.next();
-            testResult.setResult((String)mapElement.getValue());
-            testResult.setExtractName(mapElement.getKey().toString());
-            System.out.println(mapElement.getKey() + " : " + mapElement.getValue());
-        }
-
-    }
 }
