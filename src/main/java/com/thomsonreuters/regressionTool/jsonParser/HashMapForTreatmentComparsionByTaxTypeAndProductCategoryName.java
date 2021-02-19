@@ -101,22 +101,17 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         File resultFile=null;
 
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
-        String keys, value;
+        String keys , value;
         for (int i = 0; i < root.getJurisdictionTreatmentMappings().size(); i++) {
+            keys="";
             String productCategoryKey = root.getJurisdictionTreatmentMappings().get(i).getProductCategoryKey();
-            if(productCategoryKey.contains("1028059511478213031") ||
-                    productCategoryKey.contains("4732796101904615288")||
-                    productCategoryKey.contains("367623916056122557") ||
-                    productCategoryKey.contains("8630661440905874922") ||
-                    productCategoryKey.contains("3377714364674094217"))
-                continue;
             String treatmentGroupKey = root.getJurisdictionTreatmentMappings().get(i).getTreatmentGroupKey();
             String jurisdictionKey = root.getJurisdictionTreatmentMappings().get(i).getJurisdictionKey();
             String taxType = root.getJurisdictionTreatmentMappings().get(i).getTaxType();
             //String key=root.getJurisdictionTreatmentMappings().get(i).getKey();
             List<Long> fromDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getFrom();
             List<Long> toDate = root.getJurisdictionTreatmentMappings().get(i).getEffectiveDate().getmTo();
-            keys = productHashMap.get(productCategoryKey) + ":" + jurisdictionHashMap.get(jurisdictionKey) + ":" + taxType;
+//            keys = productHashMap.get(productCategoryKey) + ":" + jurisdictionHashMap.get(jurisdictionKey) + ":" + taxType;
             value = "DateRange: " + fromDate + "-To-" + toDate+"]";
 
             Collection<String> values = treatmentGroupHashMap.get(treatmentGroupKey);
@@ -137,7 +132,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                         tierRates.put(str[0], str[0] + "-tierRate:" + str[0] + "_" + str[2]);
                     }
                 } catch (Exception ex) {
-                    System.out.println("Rate is either null or corruped for :" + keys + " -> " + rateValue);
+                    System.out.println("Rate is either null or corruped for :"  + " -> " + rateValue);
                     value = value + "-rate:" + rateValue;
                 }
             }
@@ -152,11 +147,12 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                 }
             }
             for(String address:jurisdictionHashMap.get(jurisdictionKey)){
-
                 keys= productHashMap.get(productCategoryKey) + ":" + address + ":" + taxType;
+
                 treatmentComaparator.put(keys, value);
 
             }
+//            System.out.println(treatmentComaparator.size());
 
         }
 

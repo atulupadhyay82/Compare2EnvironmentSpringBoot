@@ -58,7 +58,6 @@ public class TestFetchExtract extends AbstractTestNGSpringContextTests
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         System.out.println(mockMvc);
-        testCase=new TestCase();
 
     }
 
@@ -72,6 +71,7 @@ public class TestFetchExtract extends AbstractTestNGSpringContextTests
     }
     @Test(dataProvider = "wayfair")
     public void generateResultFromService(String companyName, String extractName) throws Exception{
+        testCase=new TestCase();
         testCase.setCompanyName(companyName);
         testCase.setExtractName(extractName);
        MvcResult requestResult = mockMvc.perform( MockMvcRequestBuilders
@@ -81,7 +81,7 @@ public class TestFetchExtract extends AbstractTestNGSpringContextTests
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
        TestResult testResult = parseResponse(requestResult, TestResult.class);
         Assert.assertEquals(testResult.getExtractName()+" doesn't has same data in both the env's", testResult.getResult(),"matched");
-        
+
         }
 
     private TestResult parseResponse(MvcResult requestResult, Class<TestResult> responseClass) {

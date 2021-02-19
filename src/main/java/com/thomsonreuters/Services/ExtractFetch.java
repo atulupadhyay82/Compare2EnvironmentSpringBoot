@@ -35,6 +35,7 @@ public class ExtractFetch {
         URI uri = new URI(url + "services/rest/taxtreatments/company/" + companyName + "/extractName/" + extractName + "?loadMethod=FULL");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("authorization", "Basic " + Base64.getEncoder().encodeToString(unEncoded.getBytes()));
+        System.out.println("Fetching the extract:- " +uri.toString());
         ResponseEntity<String> response= restTemplate.exchange(
                 uri,
                 HttpMethod.GET,

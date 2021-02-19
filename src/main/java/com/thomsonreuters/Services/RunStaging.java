@@ -36,11 +36,11 @@ public class RunStaging {
 
         Long extractID_Env1 =stagingService.getExtractFromEnv1(extractName);
         stagingService.triggerStaging(propertyConfig.getUri_STG_env1(),propertyConfig.getUser_STG_env1(),propertyConfig.getPassword_STG_env1(),extractID_Env1,env1);
-        System.out.println(extractName+" is in execution state in "+  env1 +" environment, wait for its completion");
+        System.out.println(extractName+" is in execution state in "+  env1 +", wait for its completion");
 
         Long extractID_Env2 =stagingService.getExtractFromEnv2(extractName);
         stagingService.triggerStaging(propertyConfig.getUri_STG_env2(),propertyConfig.getUser_STG_env2(),propertyConfig.getPassword_STG_env2(),extractID_Env2,env2);
-        System.out.println(extractName+" is in execution state in "+  env2+" environment, wait for its completion");
+        System.out.println(extractName+" is in execution state in "+  env2+", wait for its completion");
 
         stagingService.waitForItsCompletionInEnv1(extractID_Env1,env1);
         stagingService.waitForItsCompletionInEnv2(extractID_Env2,env2);
@@ -71,20 +71,28 @@ public class RunStaging {
         String env1=propertyConfig.getEnvironment1();
         String env2= propertyConfig.getEnvironment2();
         TestResult result;
+        System.out.println("Converting json file :"+extractName+" from "+env1);
         File env1_File= JsonReader.getProcessedJson(qaJsonFile.getBody(),env1);
+        System.out.println("Converting json file :"+extractName+" from "+env2);
         File env2_File=JsonReader.getProcessedJson(satJsonFile.getBody(),env2);
-        if(env1_File ==null && env2_File ==null){
-            result=generateResults(extractName, " has some issue in "+ env1+ " and "+ env2+" both");
-        }else if(env1_File == null ) {
-            result=generateResults(extractName, " has some issue in "+env1);
-        }else if (env2_File ==null){
-            result=generateResults(extractName, " has some issue in "+env2);
-        }else{
-            boolean matched= FileUtils.contentEquals(env1_File, env2_File);
-            if(matched)
-                result=generateResults(extractName, "matched");
-            else
-                result=generateResults(extractName, "notMatched");
+        System.out.println("Comparing the processed version of :"+extractName+" from both the env's");
+        try {
+            if (env1_File == null && env2_File == null) {
+                result = generateResults(extractName, " has some issue in " + env1 + " and " + env2 + " both");
+            } else if (env1_File == null) {
+                result = generateResults(extractName, " has some issue in " + env1);
+            } else if (env2_File == null) {
+                result = generateResults(extractName, " has some issue in " + env2);
+            } else {
+                boolean matched = FileUtils.contentEquals(env1_File, env2_File);
+                if (matched)
+                    result = generateResults(extractName, "matched");
+                else
+                    result = generateResults(extractName, "notMatched");
+            }
+        }finally {
+            env1_File.delete();
+            env2_File.delete();
         }
 
         return result;
