@@ -1,4 +1,4 @@
-package com.thomsonreuters;
+package com.thomsonreuters.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thomsonreuters.controllers.RegressionController;

@@ -1,4 +1,4 @@
-package com.thomsonreuters;
+package com.thomsonreuters.tests;
 
 import com.thomsonreuters.dto.TestCase;
 import com.thomsonreuters.dto.TestResult;
@@ -12,6 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -94,8 +95,8 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
          };
      }
 
-    @Test(dataProvider = "wayfair", timeOut = 120000)
-    public void testWayfair(String companyName, String extractName) throws Exception{
+    @Test(dataProvider = "wayfair")
+    public void testWayfair(String companyName, String extractName) {
      TestCase testCase=new TestCase();
      testCase.setCompanyName(companyName);
      testCase.setExtractName(extractName);
@@ -104,5 +105,24 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
                 "matched");
     }
 
+//     @Test(timeOut = 500)
+//     public void testTwo() throws InterruptedException {
+//         Thread.sleep(1000);
+//
+//         Assert.assertEquals("testTwo", "testOne");
+//     }
+//
+//     @Test
+//     public void testOne()  {
+//         Assert.assertEquals("testTwo", "testOne");
+//     }
+//
+//     @Test(timeOut = 200)
+//     public void testThree() throws InterruptedException {
+//         Thread.sleep(400);
+//
+//         Assert.assertEquals("testTwo", "testOne");
+//     }
 
-}
+
+ }
