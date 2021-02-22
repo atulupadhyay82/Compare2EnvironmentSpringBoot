@@ -1,12 +1,16 @@
 package com.thomsonreuters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thomsonreuters.controllers.RegressionController;
 import com.thomsonreuters.dto.TestCase;
 import com.thomsonreuters.dto.TestResult;
 import org.junit.Assert;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -51,13 +55,19 @@ public class TestFetchExtract extends AbstractTestNGSpringContextTests
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
+
+    private TestRestTemplate externalClient;
     private TestCase testCase;
+
+    @MockBean
+    private RegressionController regressionController;
 
 
     @BeforeClass
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         System.out.println(mockMvc);
+
 
     }
 
@@ -70,7 +80,7 @@ public class TestFetchExtract extends AbstractTestNGSpringContextTests
 
     }
     @Test(dataProvider = "wayfair")
-    public void generateResultFromService(String companyName, String extractName) throws Exception{
+    public void testCompareExtracts(String companyName, String extractName) throws Exception{
         testCase=new TestCase();
         testCase.setCompanyName(companyName);
         testCase.setExtractName(extractName);
