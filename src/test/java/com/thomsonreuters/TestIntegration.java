@@ -94,7 +94,7 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
          };
      }
 
-    @Test(dataProvider = "wayfair")
+    @Test(dataProvider = "wayfair", timeOut = 120000)
     public void testWayfair(String companyName, String extractName) throws Exception{
      TestCase testCase=new TestCase();
      testCase.setCompanyName(companyName);

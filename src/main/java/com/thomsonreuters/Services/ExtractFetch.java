@@ -1,6 +1,8 @@
 package com.thomsonreuters.Services;
 
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,8 @@ import java.util.*;
  */
 @Service
 public class ExtractFetch {
+	
+	private static Logger logger = LoggerFactory.getLogger(ExtractFetch.class);
 
     public ResponseEntity<String> fetchExtractJSON(String uri, String userName, String password, String userName_WISH, String password_WISH, String companyName, String extractName, String env) throws Exception {
         ResponseEntity<String> responseEntity;
@@ -35,7 +39,7 @@ public class ExtractFetch {
         URI uri = new URI(url + "services/rest/taxtreatments/company/" + companyName + "/extractName/" + extractName + "?loadMethod=FULL");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("authorization", "Basic " + Base64.getEncoder().encodeToString(unEncoded.getBytes()));
-        System.out.println("Fetching the extract:- " +uri.toString());
+        logger.info("Fetching the extract:- " +uri.toString());
         ResponseEntity<String> response= restTemplate.exchange(
                 uri,
                 HttpMethod.GET,

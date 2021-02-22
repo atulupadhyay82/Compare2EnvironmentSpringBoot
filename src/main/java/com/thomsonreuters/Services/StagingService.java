@@ -5,6 +5,8 @@ import com.thomsonreuters.repository.env1.Env1CfgExtractRepository;
 import com.thomsonreuters.repository.env1.Env1StgExecutionRepository;
 import com.thomsonreuters.repository.env2.Env2CfgExtractRepository;
 import com.thomsonreuters.repository.env2.Env2StgExecutionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +39,8 @@ public class StagingService {
     @Autowired
     private Env2StgExecutionRepository env2StgExecutionRepository;
 
+    private static Logger logger = LoggerFactory.getLogger(StagingService.class);
+
     /**
      *
      * @param extractID
@@ -65,7 +69,7 @@ public class StagingService {
 
     public void triggerStaging(String URL, String username, String password, Long extractID, String env) throws URISyntaxException {
         String response= executeStaging(URL, username,password,extractID);
-        System.out.println(response);
+        logger.info(response);
     }
 
     public void waitForItsCompletionInEnv1(Long extractID, String env) {
@@ -73,26 +77,26 @@ public class StagingService {
         while(!getStatusFromEnv1(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromEnv1(extractID).equalsIgnoreCase("ERROR")){
             try {
-                System.out.println(extractID+" is still in "+ getStatusFromEnv1(extractID)+" state in "+env);
+                logger.info(extractID+" is still in "+ getStatusFromEnv1(extractID)+" state in "+env);
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(extractID+" is completed now in "+env);
+        logger.info(extractID+" is completed now in "+env);
     }
 
     public void waitForItsCompletionInEnv2(Long extractID, String env) {
         while(!getStatusFromEnv2(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromEnv2(extractID).equalsIgnoreCase("ERROR")){
             try {
-                System.out.println(extractID+" is still in "+getStatusFromEnv2(extractID)+" state in "+env);
+                logger.info(extractID+" is still in "+getStatusFromEnv2(extractID)+" state in "+env);
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(extractID+" is completed now in "+env);
+        logger.info(extractID+" is completed now in "+env);
 
     }
 
@@ -108,7 +112,7 @@ public class StagingService {
                 new HttpEntity<String>(null, httpHeaders),
                 String.class
         );
-        System.out.println(extractID+" is triggered in "+uri.toString());
+        logger.info(extractID+" is triggered in "+uri.toString());
         return response.getBody();
 
     }
