@@ -6,22 +6,56 @@ import org.testng.ITestResult;
 
 public class TestListener implements ITestListener {
 
-
-    public void onFinish(ITestContext Result)
-    {
-
+    /**
+     * Invoked each time before a test will be invoked. The <code>ITestResult</code> is only partially
+     * filled with the references to class, method, start millis and status.
+     *
+     * @param result the partially filled <code>ITestResult</code>
+     * @see ITestResult#STARTED
+     */
+    public void onTestStart(ITestResult result) {
+        // not implemented
     }
 
-
-    public void onStart(ITestContext Result)
-    {
-
+    /**
+     * Invoked each time a test succeeds.
+     *
+     * @param result <code>ITestResult</code> containing information about the run test
+     * @see ITestResult#SUCCESS
+     */
+    public void onTestSuccess(ITestResult result) {
+        // not implemented
     }
 
+    /**
+     * Invoked each time a test fails.
+     *
+     * @param result <code>ITestResult</code> containing information about the run test
+     * @see ITestResult#FAILURE
+     */
+    public void onTestFailure(ITestResult result) {
+        // not implemented
+    }
 
-    public void onTestFailedButWithinSuccessPercentage(ITestResult Result)
-    {
+    /**
+     * Invoked each time a test is skipped.
+     *
+     * @param result <code>ITestResult</code> containing information about the run test
+     * @see ITestResult#SKIP
+     */
+    public  void onTestSkipped(ITestResult result) {
+        // not implemented
+    }
 
+    /**
+     * Invoked each time a method fails but has been annotated with successPercentage and this failure
+     * still keeps it within the success percentage requested.
+     *
+     * @param result <code>ITestResult</code> containing information about the run test
+     * @see ITestResult#SUCCESS_PERCENTAGE_FAILURE
+     */
+    public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
+        // not implemented
     }
 
     /**
@@ -29,34 +63,23 @@ public class TestListener implements ITestListener {
      *
      * @param result <code>ITestResult</code> containing information about the run test
      */
-
     public void onTestFailedWithTimeout(ITestResult result) {
-        System.out.println("The name of the testcase failed with timeout is :"+result.getName());
-    }
-    // When Test case get failed, this method is called.
-
-    public void onTestFailure(ITestResult Result)
-    {
-        System.out.println("The name of the testcase failed is :"+Result.getName());
+        System.out.println("The name of the testcase failed with timeout is: "+result.getName()+result.getParameters());
     }
 
-    // When Test case get Skipped, this method is called.
-
-    public void onTestSkipped(ITestResult Result)
-    {
-        System.out.println("The name of the testcase Skipped is :"+Result.getName());
+    /**
+     * Invoked before running all the test methods belonging to the classes inside the &lt;test&gt; tag
+     * and calling all their Configuration methods.
+     */
+    public void onStart(ITestContext context) {
+        // not implemented
     }
 
-    // When Test case get Started, this method is called.
-
-    public void onTestStart(ITestResult Result)
-    {
-        System.out.println(Result.getName()+" test case started");
-    }
-
-    // When Test case get passed, this method is called.
-    public void onTestSuccess(ITestResult Result)
-    {
-        System.out.println("The name of the testcase passed is :"+Result.getName());
+    /**
+     * Invoked after all the test methods belonging to the classes inside the &lt;test&gt; tag have run
+     * and all their Configuration methods have been called.
+     */
+    public void onFinish(ITestContext context) {
+        // not implemented
     }
 }

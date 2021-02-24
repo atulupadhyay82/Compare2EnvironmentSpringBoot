@@ -27,9 +27,8 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
     @Autowired
     private TestRestTemplate restTemplate;
 
-
-     @DataProvider(name = "wayfair")
-     public Object[][] dpMethod(){
+    @DataProvider(name = "regressionTest")
+     public Object[][] dpMethod3(){
          return new Object[][]{
                  {"01_Wayfair_US","WayfairUAT_01_AL"},
                  {"01_Wayfair_US","WayfairUAT_01_AL_Store"},
@@ -91,11 +90,45 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
                  {"01_Wayfair_US","WayfairUAT_SD_LOCATION_ONLY"},
                  {"01_Wayfair_US","WayfairUAT_Texas%20Locations"},
                  {"01_Wayfair_US","WayfairUAT_Texas%20State,%20County%20and%20City"},
-                 {"01_Wayfair_US","WayfairUAT_available2"}
+                 {"01_Wayfair_US","WayfairUAT_available2"},
+                 {"ACME%20Company","Dell-CN"},
+                 {"ACME%20Company","Dell-IN"},
+                 {"ACME%20Company","Dell-US"},
+                 {"ACME%20Company","Dell-UK"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Full_Test_DEFAULT_MAPPING"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test_DEFAULT_MAPPING"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_PORTUGAL_TEST"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Switzerland_Test_2"},
+                 {"zz%20-%20Acct%20-%20WISH","ExtractTest_Wish"},
+                 {"VTest%20Industries","VTest%20AL%20Tax%20Holiday"},
+                 {"VTest%20Industries","VTest%20Main"},
+                 {"VTest%20Industries","VTest%20Main%20Range"},
+                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
+                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
+                 {"VTest%20Industries","VTest%20Tiers"},
+                 {"VTest%20Industries","VTestVE-AllAddress"},
+                 {"VTest%20Industries","VTestVE-Authority"},
+                 {"VTest%20Industries","VTestVE-AuthorityType"},
+                 {"VTest%20Industries","VTestVE-INTL"},
+                 {"VTest%20Industries","VTestVE-TaxType"},
+                 {"QUIKTRIP%20CORPORATION","TX%20Restaurant"},
+                 {"QUIKTRIP%20CORPORATION", "Non%20Restaurant"},
+                 {"QUIKTRIP%20CORPORATION","NonRestaurantTaxType"},
+                 {"Hugo%20Boss%20Retail%20Inc","XStoreExtract"},
+                 {"zz%20-%20Acct%20-%20SDI%20USA","main"},
+                 {"WISH%20Logistics%20B.V.","ExtractTest"},
+                 {"Expedia","expediaFranceExtract"},
+                 {"RxConnect","KPMG_UAT_RXC_01_MO"},
+                 {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
+                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
+                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
          };
      }
 
-    @Test(dataProvider = "wayfair")
+
+
+    @Test(dataProvider = "regressionTest")
     public void testWayfair(String companyName, String extractName) {
      TestCase testCase=new TestCase();
      testCase.setCompanyName(companyName);
