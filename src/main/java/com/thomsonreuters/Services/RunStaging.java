@@ -1,8 +1,10 @@
 package com.thomsonreuters.Services;
 
+import com.google.gson.Gson;
 import com.thomsonreuters.config.PropertyConfig;
 import com.thomsonreuters.dto.TestResult;
 import com.thomsonreuters.regressionTool.jsonParser.JsonReader;
+import com.thomsonreuters.regressionTool.pojoClasses.Root;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hpsf.CustomProperty;
 import org.aspectj.weaver.ast.Test;
@@ -74,31 +76,46 @@ public class RunStaging {
     private TestResult compareBothJSON(String extractName, ResponseEntity<String> qaJsonFile, ResponseEntity<String> satJsonFile) throws Exception {
         String env1=propertyConfig.getEnvironment1();
         String env2= propertyConfig.getEnvironment2();
+        String eval1,eval2;
+
         TestResult result = null;
         File env1_File = null,env2_File = null;
 
         try {
-            logger.info("Converting json file :"+extractName+" from "+env1);
-            env1_File= JsonReader.getProcessedJson(qaJsonFile.getBody(),env1);
 
-            logger.info("Converting json file :"+extractName+" from "+env2);
-            env2_File=JsonReader.getProcessedJson(satJsonFile.getBody(),env2);
+            logger.info("Validating the data for :"+extractName+" from "+env1);
+            eval1=validateExtract(qaJsonFile.getBody(),env1);
 
-            logger.info("Comparing the processed version of :"+extractName+" from both the env's");
-            boolean matched = FileUtils.contentEquals(env1_File, env2_File);
+            logger.info("Validating the data for :"+extractName+" from "+env2);
+            eval2= validateExtract(satJsonFile.getBody(),env2);
 
-            if (matched)
-                result = generateResults(extractName, "matched");
-            else
-                result = generateResults(extractName, "notMatched");
+            if(!eval1.equalsIgnoreCase("AllData")){
+                generateResults(extractName,eval1);
+            }
+            else if(!eval2.equalsIgnoreCase("AllData")){
+                generateResults(extractName,eval2);
+            }
+            else if(eval2.equalsIgnoreCase("AllData") && eval1.equalsIgnoreCase("AllData")){
+
+                logger.info("Converting json file :"+extractName+" from "+env1);
+                env1_File= JsonReader.getProcessedJson(qaJsonFile.getBody(),env1);
+
+                logger.info("Converting json file :"+extractName+" from "+env2);
+                env2_File=JsonReader.getProcessedJson(satJsonFile.getBody(),env2);
+
+
+
+                logger.info("Comparing the processed version of :"+extractName+" from both the env's");
+                boolean matched = FileUtils.contentEquals(env1_File, env2_File);
+
+                if (matched)
+                    result = generateResults(extractName, "matched");
+                else
+                    result = generateResults(extractName, "notMatched");
+
+            }
 
         }catch (Exception e){
-            if (env1_File == null && env2_File == null)
-                result = generateResults(extractName, " has some issue in " + env1 + " and " + env2 + " both");
-             else if (env1_File == null)
-                result = generateResults(extractName, " has some issue in " + env1);
-             else if (env2_File == null)
-                result = generateResults(extractName, " has some issue in " + env2);
 
         }finally {
 
@@ -115,11 +132,45 @@ public class RunStaging {
 
     }
 
-    public TestResult generateResults(String extractName, String result){
+    private TestResult generateResults(String extractName, String result){
         TestResult testResult=new TestResult();
         testResult.setExtractName(extractName);
         testResult.setResult(result);
         return testResult;
+    }
+
+    private  String validateExtract(String jsonFile, String env) {
+        Gson gson = new Gson();
+        Root root = gson.fromJson(jsonFile, Root.class);
+        String extractName= root.getExtractName();
+        String groupingRule=root.getGroupingRule();
+        String validateResult;
+        boolean eval=true;
+        if(root.getAddresses()==null){
+            logger.info(extractName+" does not have addresses data in "+env);
+            validateResult=extractName+" does not have addresses data in "+env;
+        }
+        else if(root.getProducts() ==null){
+            logger.info(extractName+" does not have products data in "+env);
+            validateResult=extractName+" does not have products data in "+env;
+        }
+        else if(root.getTreatments()==null){
+            logger.info(extractName+" does not have treatments data in "+env);
+            validateResult=extractName+" does not have treatments data in "+env;
+        }
+        else if((groupingRule.equalsIgnoreCase("Authority") || groupingRule.equalsIgnoreCase("AuthorityType")) && root.getmAuthorityTreatmentMappings()==null) {
+            logger.info(extractName + " does not have authorities treatment data in " + env);
+            validateResult=extractName+" does not have authorities treatment  data in "+env;
+        }
+        else if(groupingRule.equalsIgnoreCase("taxType") && root.getJurisdictionTreatmentMappings()==null){
+            logger.info(extractName+" does not have jurisdictions treatment data in "+env);
+            validateResult=extractName+" does not have jurisdictions treatment  data in "+env;
+        }
+        else{
+            validateResult= "AllData";
+        }
+        return validateResult;
+
     }
 
     }

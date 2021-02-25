@@ -1,10 +1,18 @@
 package com.thomsonreuters.listener;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import com.thomsonreuters.utils.ExtentManager;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+
 public class TestListener implements ITestListener {
+
+    public static ExtentReports extentReports ;
+    public static ExtentTest extentTest;
 
     /**
      * Invoked each time before a test will be invoked. The <code>ITestResult</code> is only partially
@@ -15,6 +23,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestStart(ITestResult result) {
         // not implemented
+        extentTest.log(LogStatus.INFO, result.getName()+" started..");
     }
 
     /**
@@ -25,6 +34,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestSuccess(ITestResult result) {
         // not implemented
+        extentTest.log(LogStatus.INFO, result.getName()+" passed..");
         System.out.println("The name of the testcase passed is: "+result.getName());
     }
 
@@ -36,6 +46,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestFailure(ITestResult result) {
         // not implemented
+        extentTest.log(LogStatus.FAIL, result.getThrowable());
         System.out.println("The name of the testcase failed : "+result.getName());
     }
 
@@ -47,6 +58,7 @@ public class TestListener implements ITestListener {
      */
     public  void onTestSkipped(ITestResult result) {
         // not implemented
+        extentTest.log(LogStatus.SKIP, result.getThrowable());
     }
 
     /**
@@ -58,6 +70,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
         // not implemented
+
     }
 
     /**
@@ -66,6 +79,7 @@ public class TestListener implements ITestListener {
      * @param result <code>ITestResult</code> containing information about the run test
      */
     public void onTestFailedWithTimeout(ITestResult result) {
+        extentTest.log(LogStatus.FAIL, result.getThrowable());
         System.out.println("The name of the testcase failed with timeout is: "+result.getName()+result.getParameters());
     }
 
@@ -75,6 +89,8 @@ public class TestListener implements ITestListener {
      */
     public void onStart(ITestContext context) {
         // not implemented
+        extentReports= ExtentManager.getReporter();
+        extentTest=extentReports.startTest(context.getName());
     }
 
     /**
@@ -83,5 +99,7 @@ public class TestListener implements ITestListener {
      */
     public void onFinish(ITestContext context) {
         // not implemented
+        extentReports.endTest(extentTest);
+        extentReports.flush();
     }
 }

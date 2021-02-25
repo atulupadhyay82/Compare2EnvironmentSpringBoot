@@ -19,10 +19,7 @@ public class JsonReader {
             Gson gson = new Gson();
             File processedExtract =null;
             Root root = gson.fromJson(jsonFile, Root.class);
-            boolean eval=validateExtract(root,env);
-            if(!eval){
-                return processedExtract;
-            }
+
             if (root.getGroupingRule().equalsIgnoreCase("taxType")) {
                 processedExtract= new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(root).hashMapGenerator(env);
 
@@ -41,32 +38,5 @@ public class JsonReader {
 
     }
 
-    private static boolean validateExtract(Root root,String env) {
-        String extractName= root.getExtractName();
-        String groupingRule=root.getGroupingRule();
-        boolean eval=true;
-        if(root.getAddresses()==null){
-            logger.info(extractName+" does not have addresses data in "+env);
-            eval=false;
-        }
-        else if(root.getProducts() ==null){
-            logger.info(extractName+" does not have products data in "+env);
-            eval=false;
-        }
-        else if(root.getTreatments()==null){
-            logger.info(extractName+" does not have products data in "+env);
-            eval=false;
-        }
-        else if((groupingRule.equalsIgnoreCase("Authority") || groupingRule.equalsIgnoreCase("AuthorityType")) && root.getmAuthorityTreatmentMappings()==null) {
-            logger.info(extractName + " does not have authorities treatment data in " + env);
-            eval = false;
-        }
-        else if(groupingRule.equalsIgnoreCase("taxType") && root.getJurisdictionTreatmentMappings()==null){
-            logger.info(extractName+" does not have jurisdictions treatment data in "+env);
-            eval=false;
-        }
-        return eval;
-
-    }
 
 }
