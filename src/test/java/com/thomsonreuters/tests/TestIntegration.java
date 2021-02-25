@@ -28,7 +28,7 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
     private TestRestTemplate restTemplate;
 
     @DataProvider(name = "regressionTest")
-     public Object[][] dpMethod3(){
+     public Object[][] dpMethod(){
          return new Object[][]{
                  {"01_Wayfair_US","WayfairUAT_01_AL"},
                  {"01_Wayfair_US","WayfairUAT_01_AL_Store"},
@@ -119,10 +119,10 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
                  {"zz%20-%20Acct%20-%20SDI%20USA","main"},
                  {"WISH%20Logistics%20B.V.","ExtractTest"},
                  {"Expedia","expediaFranceExtract"},
-                 {"RxConnect","KPMG_UAT_RXC_01_MO"},
-                 {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
-                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
-                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
+                 {"RxConnect","KPMG_UAT_RXC_01_MO"}
+//                 {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
+//                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
+//                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
          };
      }
 
@@ -133,7 +133,7 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
      TestCase testCase=new TestCase();
      testCase.setCompanyName(companyName);
      testCase.setExtractName(extractName);
-        Assert.assertEquals("these are not matching" ,this.restTemplate.postForEntity("http://localhost:" + port+ "/compareExtract",
+        Assert.assertEquals("these are not matching" ,this.restTemplate.postForEntity("http://localhost:" + port+ "/compareExtractWithoutStaging",
                 testCase, TestResult.class).getBody().getResult(),
                 "matched");
     }

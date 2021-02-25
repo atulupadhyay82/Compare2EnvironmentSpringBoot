@@ -21,9 +21,15 @@ public class RegressionController {
     @Autowired
     private RunStaging runStaging;
 
-    @RequestMapping(method = RequestMethod.POST, value="/compareExtract")
-    public TestResult compareExtract(@RequestBody TestCase testcase) throws IOException, URISyntaxException {
+    @RequestMapping(method = RequestMethod.POST, value="/compareExtractWithStaging")
+    public TestResult compareExtractWithStaging(@RequestBody TestCase testcase) throws IOException, URISyntaxException {
         TestResult result= runStaging.compareExtractData(testcase.getCompanyName(), testcase.getExtractName());
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/compareExtractWithoutStaging")
+    public TestResult compareExtractWithoutStaging(@RequestBody TestCase testcase) throws IOException, URISyntaxException {
+        TestResult result= runStaging.fetchAndCompareExtractData(testcase.getCompanyName(), testcase.getExtractName());
         return result;
     }
 

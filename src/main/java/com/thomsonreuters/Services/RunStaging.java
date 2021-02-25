@@ -74,29 +74,41 @@ public class RunStaging {
     private TestResult compareBothJSON(String extractName, ResponseEntity<String> qaJsonFile, ResponseEntity<String> satJsonFile) throws Exception {
         String env1=propertyConfig.getEnvironment1();
         String env2= propertyConfig.getEnvironment2();
-        TestResult result;
-        logger.info("Converting json file :"+extractName+" from "+env1);
-        File env1_File= JsonReader.getProcessedJson(qaJsonFile.getBody(),env1);
-        logger.info("Converting json file :"+extractName+" from "+env2);
-        File env2_File=JsonReader.getProcessedJson(satJsonFile.getBody(),env2);
-        logger.info("Comparing the processed version of :"+extractName+" from both the env's");
+        TestResult result = null;
+        File env1_File = null,env2_File = null;
+
         try {
-            if (env1_File == null && env2_File == null) {
+            logger.info("Converting json file :"+extractName+" from "+env1);
+            env1_File= JsonReader.getProcessedJson(qaJsonFile.getBody(),env1);
+
+            logger.info("Converting json file :"+extractName+" from "+env2);
+            env2_File=JsonReader.getProcessedJson(satJsonFile.getBody(),env2);
+
+            logger.info("Comparing the processed version of :"+extractName+" from both the env's");
+            boolean matched = FileUtils.contentEquals(env1_File, env2_File);
+
+            if (matched)
+                result = generateResults(extractName, "matched");
+            else
+                result = generateResults(extractName, "notMatched");
+
+        }catch (Exception e){
+            if (env1_File == null && env2_File == null)
                 result = generateResults(extractName, " has some issue in " + env1 + " and " + env2 + " both");
-            } else if (env1_File == null) {
+             else if (env1_File == null)
                 result = generateResults(extractName, " has some issue in " + env1);
-            } else if (env2_File == null) {
+             else if (env2_File == null)
                 result = generateResults(extractName, " has some issue in " + env2);
-            } else {
-                boolean matched = FileUtils.contentEquals(env1_File, env2_File);
-                if (matched)
-                    result = generateResults(extractName, "matched");
-                else
-                    result = generateResults(extractName, "notMatched");
-            }
+
         }finally {
-            env1_File.delete();
-            env2_File.delete();
+
+            if ((env1_File != null)) {
+                env1_File.delete();
+            }
+            if ((env2_File != null)) {
+                env2_File.delete();
+            }
+
         }
 
         return result;

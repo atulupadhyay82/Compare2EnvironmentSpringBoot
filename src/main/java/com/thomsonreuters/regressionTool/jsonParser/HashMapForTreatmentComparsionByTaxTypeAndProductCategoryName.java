@@ -25,7 +25,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         this.root = root;
     }
 
-    public File hashMapGenerator(String env) {
+    public File hashMapGenerator(String env)  {
         File ouptutFile=null;
         try {
             productHashMapGenerator();

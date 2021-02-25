@@ -73,7 +73,10 @@ public class StagingService {
     }
 
     public void waitForItsCompletionInEnv1(Long extractID, String env) {
-
+        if(getStatusFromEnv1(extractID)==null){
+            logger.info("Staging has not been triggered yet for the extract: "+extractID+" in "+env);
+            return;
+        }
         while(!getStatusFromEnv1(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromEnv1(extractID).equalsIgnoreCase("ERROR")){
             try {
@@ -87,6 +90,10 @@ public class StagingService {
     }
 
     public void waitForItsCompletionInEnv2(Long extractID, String env) {
+        if(getStatusFromEnv2(extractID)==null){
+            logger.info("Staging has not been triggered yet for the extract: "+extractID+" in "+env);
+            return;
+        }
         while(!getStatusFromEnv2(extractID).equalsIgnoreCase("Complete") &&
                 !getStatusFromEnv2(extractID).equalsIgnoreCase("ERROR")){
             try {

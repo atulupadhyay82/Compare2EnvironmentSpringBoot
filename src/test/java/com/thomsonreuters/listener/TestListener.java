@@ -25,6 +25,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestSuccess(ITestResult result) {
         // not implemented
+        System.out.println("The name of the testcase passed is: "+result.getName());
     }
 
     /**
@@ -35,6 +36,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestFailure(ITestResult result) {
         // not implemented
+        System.out.println("The name of the testcase failed : "+result.getName());
     }
 
     /**
