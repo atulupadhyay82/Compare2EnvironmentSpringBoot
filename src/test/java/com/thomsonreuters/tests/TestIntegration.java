@@ -1,7 +1,11 @@
 package com.thomsonreuters.tests;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import com.thomsonreuters.dto.TestCase;
 import com.thomsonreuters.dto.TestResult;
+import com.thomsonreuters.utils.ExtentManager;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
@@ -11,9 +15,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,6 +36,7 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
 
     @Autowired
     private TestRestTemplate restTemplate;
+
 
     @DataProvider(name = "regressionTest")
      public Object[][] dpMethod(){
@@ -87,43 +97,43 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
                  {"01_Wayfair_US","WayfairUAT_49_WV"},
                  {"01_Wayfair_US","WayfairUAT_50_WI"},
                  {"01_Wayfair_US","WayfairUAT_51_WY"},
-                 {"01_Wayfair_US","WayfairUAT_52_Canada"}
-//                 {"01_Wayfair_US","WayfairUAT_SD_LOCATION_ONLY"},
-//                 {"01_Wayfair_US","WayfairUAT_Texas%20Locations"},
-//                 {"01_Wayfair_US","WayfairUAT_Texas%20State,%20County%20and%20City"},
-//                 {"01_Wayfair_US","WayfairUAT_available2"},
-//                 {"ACME%20Company","Dell-CN"},
-//                 {"ACME%20Company","Dell-IN"},
-//                 {"ACME%20Company","Dell-US"},
-//                 {"ACME%20Company","Dell-UK"},
-//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test"},
-//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Full_Test_DEFAULT_MAPPING"},
-//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test_DEFAULT_MAPPING"},
-//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_PORTUGAL_TEST"},
-//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Switzerland_Test_2"},
-//                 {"zz%20-%20Acct%20-%20WISH","ExtractTest_Wish"},
-//                 {"VTest%20Industries","VTest%20AL%20Tax%20Holiday"},
-//                 {"VTest%20Industries","VTest%20Main"},
-//                 {"VTest%20Industries","VTest%20Main%20Range"},
-//                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
-//                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
-//                 {"VTest%20Industries","VTest%20Tiers"},
-//                 {"VTest%20Industries","VTestVE-AllAddress"},
-//                 {"VTest%20Industries","VTestVE-Authority"},
-//                 {"VTest%20Industries","VTestVE-AuthorityType"},
-//                 {"VTest%20Industries","VTestVE-INTL"},
-//                 {"VTest%20Industries","VTestVE-TaxType"},
-//                 {"QUIKTRIP%20CORPORATION","TX%20Restaurant"},
-//                 {"QUIKTRIP%20CORPORATION", "Non%20Restaurant"},
-//                 {"QUIKTRIP%20CORPORATION","NonRestaurantTaxType"},
-//                 {"Hugo%20Boss%20Retail%20Inc","XStoreExtract"},
-//                 {"zz%20-%20Acct%20-%20SDI%20USA","main"},
-//                 {"WISH%20Logistics%20B.V.","ExtractTest"},
-//                 {"Expedia","expediaFranceExtract"},
-//                 {"RxConnect","KPMG_UAT_RXC_01_MO"}
-//                 {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
-//                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
-//                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
+                 {"01_Wayfair_US","WayfairUAT_52_Canada"},
+                 {"01_Wayfair_US","WayfairUAT_SD_LOCATION_ONLY"},
+                 {"01_Wayfair_US","WayfairUAT_Texas%20Locations"},
+                 {"01_Wayfair_US","WayfairUAT_Texas%20State,%20County%20and%20City"},
+                 {"01_Wayfair_US","WayfairUAT_available2"},
+                 {"ACME%20Company","Dell-CN"},
+                 {"ACME%20Company","Dell-IN"},
+                 {"ACME%20Company","Dell-US"},
+                 {"ACME%20Company","Dell-UK"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Full_Test_DEFAULT_MAPPING"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test_DEFAULT_MAPPING"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_PORTUGAL_TEST"},
+                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Switzerland_Test_2"},
+                 {"zz%20-%20Acct%20-%20WISH","ExtractTest_Wish"},
+                 {"VTest%20Industries","VTest%20AL%20Tax%20Holiday"},
+                 {"VTest%20Industries","VTest%20Main"},
+                 {"VTest%20Industries","VTest%20Main%20Range"},
+                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
+                 {"VTest%20Industries","VTest%20Rule%20Range%20Error"},
+                 {"VTest%20Industries","VTest%20Tiers"},
+                 {"VTest%20Industries","VTestVE-AllAddress"},
+                 {"VTest%20Industries","VTestVE-Authority"},
+                 {"VTest%20Industries","VTestVE-AuthorityType"},
+                 {"VTest%20Industries","VTestVE-INTL"},
+                 {"VTest%20Industries","VTestVE-TaxType"},
+                 {"QUIKTRIP%20CORPORATION","TX%20Restaurant"},
+                 {"QUIKTRIP%20CORPORATION", "Non%20Restaurant"},
+                 {"QUIKTRIP%20CORPORATION","NonRestaurantTaxType"},
+                 {"Hugo%20Boss%20Retail%20Inc","XStoreExtract"},
+                 {"zz%20-%20Acct%20-%20SDI%20USA","main"},
+                 {"WISH%20Logistics%20B.V.","ExtractTest"},
+                 {"Expedia","expediaFranceExtract"},
+                 {"RxConnect","KPMG_UAT_RXC_01_MO"},
+                 {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
+                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
+                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
          };
      }
 

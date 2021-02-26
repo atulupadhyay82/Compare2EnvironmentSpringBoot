@@ -2,6 +2,8 @@
 /build/
 /src/main/resources/excelSheets
 /src/main/resources/jsonFiles
+/testngOutput
+/ExtentReports
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###

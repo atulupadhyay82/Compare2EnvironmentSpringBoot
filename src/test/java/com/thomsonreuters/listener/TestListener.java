@@ -8,6 +8,8 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.util.Set;
+
 
 public class TestListener implements ITestListener {
 
@@ -23,6 +25,10 @@ public class TestListener implements ITestListener {
      */
     public void onTestStart(ITestResult result) {
         // not implemented
+        Object[] params= result.getParameters();
+        String testName= params[0]+"-"+params[1];
+        result.setTestName(testName);
+        extentTest=extentReports.startTest(testName);
         extentTest.log(LogStatus.INFO, result.getName()+" started..");
     }
 
@@ -47,7 +53,7 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         // not implemented
         extentTest.log(LogStatus.FAIL, result.getThrowable());
-        System.out.println("The name of the testcase failed : "+result.getName());
+
     }
 
     /**
@@ -80,7 +86,7 @@ public class TestListener implements ITestListener {
      */
     public void onTestFailedWithTimeout(ITestResult result) {
         extentTest.log(LogStatus.FAIL, result.getThrowable());
-        System.out.println("The name of the testcase failed with timeout is: "+result.getName()+result.getParameters());
+        System.out.println("The name of the testcase failed with timeout is: "+result.getName());
     }
 
     /**
@@ -90,7 +96,7 @@ public class TestListener implements ITestListener {
     public void onStart(ITestContext context) {
         // not implemented
         extentReports= ExtentManager.getReporter();
-        extentTest=extentReports.startTest(context.getName());
+
     }
 
     /**
