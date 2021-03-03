@@ -73,6 +73,20 @@ public class RunStaging {
 
     }
 
+    public String generatedProcessedVersion(String companyName,String extractName) throws Exception {
+        String result=null;
+        ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
+                propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
+
+        ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
+                propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
+
+        String eval1=validateExtract(env_1_Json_String.getBody(),propertyConfig.getEnvironment1());
+        String eval2= validateExtract(env_2_Json_String.getBody(),propertyConfig.getEnvironment2());
+       return result;
+
+    }
+
     private TestResult compareBothJSON(String extractName, ResponseEntity<String> qaJsonFile, ResponseEntity<String> satJsonFile) throws Exception {
         String env1=propertyConfig.getEnvironment1();
         String env2= propertyConfig.getEnvironment2();

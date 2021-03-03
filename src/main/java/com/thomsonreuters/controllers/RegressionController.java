@@ -33,5 +33,11 @@ public class RegressionController {
         return result;
     }
 
+//    @RequestMapping(method = RequestMethod.POST, value="/compareExtractWithoutStaging")
+//    public String getProcessedVersion(@RequestBody TestCase testcase) throws Exception {
+//        String result= runStaging.generatedProcessedVersion(testcase.getCompanyName(), testcase.getExtractName());
+//        return result;
+//    }
+
 
 }

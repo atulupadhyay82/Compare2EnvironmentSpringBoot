@@ -30,7 +30,7 @@ import java.lang.reflect.Parameter;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(
         locations = "classpath:application.properties")
-public class TestIntegration  extends AbstractTestNGSpringContextTests
+public class TestIntegration  extends AbstractTestNGSpringContextTests implements ITest
  {
 
     @LocalServerPort
@@ -166,11 +166,10 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests
                 "matched");
     }
 
-//     @Override
-//     public String getTestName() {
-//
-//        return this.companyName+" -> "+this.extractName;
-//     }
+     @Override
+     public String getTestName() {
+        return this.companyName+" -> "+this.extractName;
+     }
 
 //     @Test(timeOut = 500)
 //     public void testTwo() throws InterruptedException {

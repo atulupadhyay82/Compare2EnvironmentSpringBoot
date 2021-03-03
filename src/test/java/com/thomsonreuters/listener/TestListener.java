@@ -98,7 +98,7 @@ public class TestListener implements ITestListener {
      */
     public void onStart(ITestContext context) {
         // not implemented
-        extentTest.log(LogStatus.INFO, "Initiating an extent test report instance");
+
         extentReports= ExtentManager.getReporter();
 
     }
