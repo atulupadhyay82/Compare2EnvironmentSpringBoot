@@ -25,11 +25,14 @@ public class TestListener implements ITestListener {
      */
     public void onTestStart(ITestResult result) {
         // not implemented
-        Object[] params= result.getParameters();
-        String testName= params[0]+"-"+params[1];
-        result.setTestName(testName);
+//        Object[] params= result.getParameters();
+//        String testName= params[0]+" -> "+params[1];
+//        result.setTestName(testName);
+
+        String testName= result.getTestContext().getAttribute("testName").toString();
         extentTest=extentReports.startTest(testName);
-        extentTest.log(LogStatus.INFO, result.getName()+" started..");
+
+        extentTest.log(LogStatus.INFO, testName+ " started..");
     }
 
     /**
@@ -95,6 +98,7 @@ public class TestListener implements ITestListener {
      */
     public void onStart(ITestContext context) {
         // not implemented
+        extentTest.log(LogStatus.INFO, "Initiating an extent test report instance");
         extentReports= ExtentManager.getReporter();
 
     }
@@ -105,6 +109,7 @@ public class TestListener implements ITestListener {
      */
     public void onFinish(ITestContext context) {
         // not implemented
+        extentTest.log(LogStatus.INFO, "Creating an extent test report");
         extentReports.endTest(extentTest);
         extentReports.flush();
     }
