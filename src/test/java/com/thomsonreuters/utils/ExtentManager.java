@@ -16,7 +16,7 @@ public class ExtentManager {
         if (extent == null) {
             //Set HTML reporting file location
             String workingDir = System.getProperty("user.dir");
-            extent = new ExtentReports(workingDir + fileSeperator + "com.thomsonreuters.ExtentReports" + fileSeperator + "ExtentReportResults.html", true);
+            extent = new ExtentReports(workingDir + fileSeperator + "ExtentReports" + fileSeperator + "ExtentReportResults.html", true);
         }
         return extent;
     }
