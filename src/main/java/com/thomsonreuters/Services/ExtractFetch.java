@@ -24,7 +24,7 @@ public class ExtractFetch {
 
     public ResponseEntity<String> fetchExtractJSON(String uri, String userName, String password, String userName_WISH, String password_WISH, String companyName, String extractName, String env) throws Exception {
         ResponseEntity<String> responseEntity;
-        if(extractName.contains("Wish") ){
+        if(extractName.contains("Wish") && uri.contains("sat") ){
             responseEntity= getStringResponseEntity(uri, companyName, extractName, userName_WISH, password_WISH);
         }
         else{

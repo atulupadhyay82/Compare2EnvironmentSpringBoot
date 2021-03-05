@@ -2,6 +2,7 @@ package com.thomsonreuters.Services;
 
 import com.google.gson.Gson;
 import com.thomsonreuters.config.PropertyConfig;
+import com.thomsonreuters.dto.TestCase;
 import com.thomsonreuters.dto.TestResult;
 import com.thomsonreuters.regressionTool.jsonParser.JsonReader;
 import com.thomsonreuters.regressionTool.pojoClasses.Root;
@@ -57,6 +58,7 @@ public class RunStaging {
 
 
     public TestResult fetchAndCompareExtractData(String companyName, String extractName){
+        TestResult result=null;
         try {
             ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
                     propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
@@ -64,28 +66,32 @@ public class RunStaging {
             ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
                     propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
 
-            return compareBothJSON(extractName,env_1_Json_String,env_2_Json_String);
+            result= compareBothJSON(extractName,env_1_Json_String,env_2_Json_String);
         } catch (Exception e) {
-            e.printStackTrace();
+            result=generateResults(extractName,e.toString());
             logger.info("CompareExtract:: Error occured for extract " + extractName + ":: " + e.getMessage());
         }
-        return null;
+        return result;
 
     }
 
-    public String generatedProcessedVersion(String companyName,String extractName) throws Exception {
-        String result=null;
-        ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
-                propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
-
-        ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
-                propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
-
-        String eval1=validateExtract(env_1_Json_String.getBody(),propertyConfig.getEnvironment1());
-        String eval2= validateExtract(env_2_Json_String.getBody(),propertyConfig.getEnvironment2());
-       return result;
-
-    }
+//    public String generatedProcessedVersion(String companyName,String extractName) throws Exception {
+//        String result=null;
+//        try{
+//            ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
+//                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
+//
+//            ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
+//                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
+//            String eval1=validateExtract(env_1_Json_String.getBody(),propertyConfig.getEnvironment1());
+//            String eval2= validateExtract(env_2_Json_String.getBody(),propertyConfig.getEnvironment2());
+//
+//        }catch (Exception ex){
+//
+//        }
+//       return result;
+//
+//    }
 
     private TestResult compareBothJSON(String extractName, ResponseEntity<String> qaJsonFile, ResponseEntity<String> satJsonFile) throws Exception {
         String env1=propertyConfig.getEnvironment1();
@@ -103,11 +109,15 @@ public class RunStaging {
             logger.info("Validating the data for :"+extractName+" from "+env2);
             eval2= validateExtract(satJsonFile.getBody(),env2);
 
-            if(!eval1.equalsIgnoreCase("AllData")){
-                generateResults(extractName,eval1);
+            if(!eval1.equalsIgnoreCase("AllData") && !eval2.equalsIgnoreCase("AllData") ){
+                result=generateResults(extractName,eval1+" and "+eval2);
+            }
+
+            else if(!eval1.equalsIgnoreCase("AllData")){
+                result=generateResults(extractName,eval1);
             }
             else if(!eval2.equalsIgnoreCase("AllData")){
-                generateResults(extractName,eval2);
+                result=generateResults(extractName,eval2);
             }
             else if(eval2.equalsIgnoreCase("AllData") && eval1.equalsIgnoreCase("AllData")){
 
@@ -125,7 +135,7 @@ public class RunStaging {
                 if (matched)
                     result = generateResults(extractName, "matched");
                 else
-                    result = generateResults(extractName, "notMatched");
+                    result = generateResults(extractName, "notMatched. Extract has data diff in both the env");
 
             }
 

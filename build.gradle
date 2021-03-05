@@ -85,6 +85,7 @@ test {
         suites 'src/test/resources/testNg.xml'
         useDefaultListeners =true
         outputDirectory=file("$projectDir/testngOutput")
+        suites 'testngOutput/testng-failed.xml'
     }
 
     // set heap size for the test JVM(s)

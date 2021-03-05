@@ -4,6 +4,7 @@
 <suite name = "Suite1" configfailurepolicy="continue">
     <listeners>
         <listener class-name="com.thomsonreuters.listener.TestListener"></listener>
+<!--        <listener class-name="com.thomsonreuters.listener.AnnotationTransformer"></listener>-->
     </listeners>
     <test name = "test1">
         <classes>

@@ -141,8 +141,7 @@ public class RegressionTests extends AbstractTestNGSpringContextTests
                  {"Expedia","expediaFranceExtract"},
                  {"RxConnect","KPMG_UAT_RXC_01_MO"},
                  {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
-                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
-                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","seveneleven-small"}
+                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"}
          };
      }
 
@@ -165,9 +164,11 @@ public class RegressionTests extends AbstractTestNGSpringContextTests
         testCase.setExtractName(extractName);
         testCase.setCompanyName(companyName);
 
-        Assert.assertEquals("these are not matching" ,this.restTemplate.postForEntity("http://localhost:" + port+ "/compareExtractWithoutStaging",
-                testCase, TestResult.class).getBody().getResult(),
-                "matched");
+        Assert.assertEquals("Tests failed due to the reason mentioned in the actual results" ,"matched",
+                this.restTemplate.postForEntity("http://localhost:" + port+ "/compareExtractWithoutStaging",
+                                                    testCase, TestResult.class)
+                                                    .getBody().getResult()
+                );
     }
 
 //     @Override
