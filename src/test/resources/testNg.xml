@@ -7,7 +7,7 @@
     </listeners>
     <test name = "test1">
         <classes>
-            <class name = "com.thomsonreuters.tests.TestIntegration"/>
+            <class name = "com.thomsonreuters.tests.RegressionTests"/>
         </classes>
     </test>
 </suite>

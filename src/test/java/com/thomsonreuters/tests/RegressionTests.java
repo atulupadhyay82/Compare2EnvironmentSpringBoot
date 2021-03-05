@@ -8,6 +8,8 @@ import com.thomsonreuters.dto.TestResult;
 import com.thomsonreuters.utils.ExtentManager;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,9 +30,10 @@ import java.lang.reflect.Parameter;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 @TestPropertySource(
         locations = "classpath:application.properties")
-public class TestIntegration  extends AbstractTestNGSpringContextTests implements ITest
+public class RegressionTests extends AbstractTestNGSpringContextTests
  {
 
     @LocalServerPort
@@ -38,9 +41,9 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests implement
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private String extractName;
-    private String companyName;
+//
+//    private String extractName;
+//    private String companyName;
 
 
 
@@ -143,51 +146,33 @@ public class TestIntegration  extends AbstractTestNGSpringContextTests implement
          };
      }
 
-     public TestIntegration(){}
+//     public RegressionTests(){}
+//
+//     @Factory(dataProvider = "regressionTest")
+//     public RegressionTests(String companyName, String extractName) {
+//         this.companyName=companyName;
+//         this.extractName=extractName;
+//     }
 
-     @Factory(dataProvider = "regressionTest")
-     public TestIntegration(String companyName, String extractName) {
-         this.companyName=companyName;
-         this.extractName=extractName;
-     }
+//     @BeforeMethod
+//     public void setTestNameForExtentReport(ITestContext ctx){
+//        ctx.setAttribute("testName", this.companyName+" -> "+ this.extractName);
+//     }
 
-     @BeforeMethod
-     public void setTestNameForExtentReport(ITestContext ctx){
-        ctx.setAttribute("testName", this.companyName+" -> "+ this.extractName);
-     }
-     @Test
-    public void testWayfair() {
+    @Test(dataProvider = "regressionTest")
+    public void testWayfair(String companyName, String extractName) {
         TestCase testCase=new TestCase();
-        testCase.setExtractName(this.extractName);
-        testCase.setCompanyName(this.companyName);
+        testCase.setExtractName(extractName);
+        testCase.setCompanyName(companyName);
 
         Assert.assertEquals("these are not matching" ,this.restTemplate.postForEntity("http://localhost:" + port+ "/compareExtractWithoutStaging",
                 testCase, TestResult.class).getBody().getResult(),
                 "matched");
     }
 
-     @Override
-     public String getTestName() {
-        return this.companyName+" -> "+this.extractName;
-     }
-
-//     @Test(timeOut = 500)
-//     public void testTwo() throws InterruptedException {
-//         Thread.sleep(1000);
-//
-//         Assert.assertEquals("testTwo", "testOne");
-//     }
-//
-//     @Test
-//     public void testOne()  {
-//         Assert.assertEquals("testTwo", "testOne");
-//     }
-//
-//     @Test(timeOut = 200)
-//     public void testThree() throws InterruptedException {
-//         Thread.sleep(400);
-//
-//         Assert.assertEquals("testTwo", "testOne");
+//     @Override
+//     public String getTestName() {
+//        return this.companyName+" -> "+this.extractName;
 //     }
 
 

@@ -25,11 +25,11 @@ public class TestListener implements ITestListener {
      */
     public void onTestStart(ITestResult result) {
         // not implemented
-//        Object[] params= result.getParameters();
-//        String testName= params[0]+" -> "+params[1];
-//        result.setTestName(testName);
+        Object[] params= result.getParameters();
+        String testName= params[0]+" -> "+params[1];
+      //  result.setTestName(testName);
 
-        String testName= result.getTestContext().getAttribute("testName").toString();
+//        String testName= result.getTestContext().getAttribute("testName").toString();
         extentTest=extentReports.startTest(testName);
 
         extentTest.log(LogStatus.INFO, testName+ " started..");
