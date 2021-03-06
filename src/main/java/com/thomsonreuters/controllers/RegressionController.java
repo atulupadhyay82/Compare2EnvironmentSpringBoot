@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class RegressionController {
@@ -33,11 +31,15 @@ public class RegressionController {
         return result;
     }
 
-//    @RequestMapping(method = RequestMethod.POST, value="/compareExtractWithoutStaging")
-//    public String getProcessedVersion(@RequestBody TestCase testcase) throws Exception {
-//        String result= runStaging.generatedProcessedVersion(testcase.getCompanyName(), testcase.getExtractName());
-//        return result;
-//    }
+    @RequestMapping(method = RequestMethod.GET, value="/fetchExtracts")
+    public List<TestResult> getProcessedVersion(@RequestBody List<TestCase> testcases) throws Exception {
+        List<TestResult> results=new ArrayList<>();
+        for(TestCase testcase:testcases){
+            results.add(runStaging.generatedProcessedVersion(testcase.getCompanyName(), testcase.getExtractName()));
+        }
+
+        return results;
+    }
 
 
 }

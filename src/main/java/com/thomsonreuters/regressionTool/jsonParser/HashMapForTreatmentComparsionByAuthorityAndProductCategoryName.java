@@ -99,7 +99,8 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
     }
 
     File authorityTreatmentMappingsExcelWriter(String env) throws IOException {
-        String fileName = "Extract_" +env;
+        String extractName= root.getExtractName();
+        String fileName = extractName+"_" +env;
         File resultFile=null;
         MultiValuedMap<String, String> treatmentComaparator = new ArrayListValuedHashMap<String, String>();
         String keys, value;

@@ -75,23 +75,39 @@ public class RunStaging {
 
     }
 
-//    public String generatedProcessedVersion(String companyName,String extractName) throws Exception {
-//        String result=null;
-//        try{
-//            ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
-//                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
-//
-//            ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
-//                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
-//            String eval1=validateExtract(env_1_Json_String.getBody(),propertyConfig.getEnvironment1());
-//            String eval2= validateExtract(env_2_Json_String.getBody(),propertyConfig.getEnvironment2());
-//
-//        }catch (Exception ex){
-//
-//        }
-//       return result;
-//
-//    }
+    public TestResult generatedProcessedVersion(String companyName,String extractName) throws Exception {
+        String env1=propertyConfig.getEnvironment1();
+        String env2=propertyConfig.getEnvironment2();
+        TestResult result = null;
+        try {
+            ResponseEntity<String> env_1_Json_String = extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(), propertyConfig.getUser_CE_env1(), propertyConfig.getPassword_CE_env1(), propertyConfig.getUser_CE_Wish(),
+                    propertyConfig.getPassword_CE_Wish(), companyName, extractName, env1);
+
+            ResponseEntity<String> env_2_Json_String = extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(), propertyConfig.getUser_CE_env2(), propertyConfig.getPassword_CE_env2(), propertyConfig.getUser_CE_Wish(),
+                    propertyConfig.getPassword_CE_Wish(), companyName, extractName, env2);
+
+            logger.info("Validating the data for :" + extractName + " from " + env1);
+            String eval1 = validateExtract(env_1_Json_String.getBody(), env1);
+
+            logger.info("Validating the data for :" + extractName + " from " + env2);
+            String eval2 = validateExtract(env_2_Json_String.getBody(), env2);
+
+            if (!eval1.equalsIgnoreCase("AllData") && !eval2.equalsIgnoreCase("AllData")) {
+               result= generateResults(extractName, eval1 + " and " + eval2);
+            } else if (!eval1.equalsIgnoreCase("AllData")) {
+                result=generateResults(extractName, eval1);
+            } else if (!eval2.equalsIgnoreCase("AllData")) {
+               result= generateResults(extractName, eval2);
+            } else if (eval2.equalsIgnoreCase("AllData") && eval1.equalsIgnoreCase("AllData")) {
+                JsonReader.getProcessedJson(env_1_Json_String.getBody(), env1);
+                JsonReader.getProcessedJson(env_2_Json_String.getBody(), env2);
+                result=generateResults(extractName,"Data is fetched on the local machine");
+            }
+        }catch(Exception ex){
+            result=generateResults(extractName,"Exception occured for this -> "+ex.getMessage());
+        }
+        return result;
+    }
 
     private TestResult compareBothJSON(String extractName, ResponseEntity<String> qaJsonFile, ResponseEntity<String> satJsonFile) throws Exception {
         String env1=propertyConfig.getEnvironment1();
