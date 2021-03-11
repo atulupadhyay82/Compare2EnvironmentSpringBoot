@@ -59,12 +59,19 @@ public class RunStaging {
 
     public TestResult fetchAndCompareExtractData(String companyName, String extractName){
         TestResult result=null;
+        String env1=propertyConfig.getEnvironment1();
+        String env2=propertyConfig.getEnvironment2();
         try {
+            long time = System.currentTimeMillis();
             ResponseEntity<String> env_1_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(),propertyConfig.getUser_CE_env1(),propertyConfig.getPassword_CE_env1(),propertyConfig.getUser_CE_Wish(),
-                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment1());
+                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,env1);
 
+            long responseTime = System.currentTimeMillis();
+            logger.info("Response time for "+extractName+" in "+env1+" -> "+ (responseTime-time)/1000+"seconds");
             ResponseEntity<String> env_2_Json_String= extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(),propertyConfig.getUser_CE_env2(),propertyConfig.getPassword_CE_env2(),propertyConfig.getUser_CE_Wish(),
-                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,propertyConfig.getEnvironment2());
+                    propertyConfig.getPassword_CE_Wish(),companyName,extractName,env2);
+            long responseTime2= System.currentTimeMillis();
+            logger.info("Response time for "+extractName+" in "+env2+" -> "+ (responseTime2-responseTime)/1000+"seconds");
 
             result= compareBothJSON(extractName,env_1_Json_String,env_2_Json_String);
         } catch (Exception e) {
@@ -80,11 +87,18 @@ public class RunStaging {
         String env2=propertyConfig.getEnvironment2();
         TestResult result = null;
         try {
+            long time = System.currentTimeMillis();
+
             ResponseEntity<String> env_1_Json_String = extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env1(), propertyConfig.getUser_CE_env1(), propertyConfig.getPassword_CE_env1(), propertyConfig.getUser_CE_Wish(),
                     propertyConfig.getPassword_CE_Wish(), companyName, extractName, env1);
 
+            long responseTime = System.currentTimeMillis();
+            logger.info("Response time for "+extractName+" in "+env1+" -> "+ (responseTime-time)/1000+" seconds");
             ResponseEntity<String> env_2_Json_String = extractFetch.fetchExtractJSON(propertyConfig.getUri_CE_env2(), propertyConfig.getUser_CE_env2(), propertyConfig.getPassword_CE_env2(), propertyConfig.getUser_CE_Wish(),
                     propertyConfig.getPassword_CE_Wish(), companyName, extractName, env2);
+
+            long responseTime2= System.currentTimeMillis() ;
+            logger.info("Response time for "+extractName+" in "+env2+" -> "+ (responseTime2-responseTime)/1000+" seconds");
 
             logger.info("Validating the data for :" + extractName + " from " + env1);
             String eval1 = validateExtract(env_1_Json_String.getBody(), env1);
@@ -104,6 +118,7 @@ public class RunStaging {
                 result=generateResults(extractName,"Data is fetched on the local machine");
             }
         }catch(Exception ex){
+            logger.info("Exception occured for extract"+ex);
             result=generateResults(extractName,"Exception occured for this -> "+ex.getMessage());
         }
         return result;
