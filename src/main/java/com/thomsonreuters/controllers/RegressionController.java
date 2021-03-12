@@ -31,7 +31,7 @@ public class RegressionController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/fetchExtracts")
+    @RequestMapping(method = RequestMethod.POST, value="/fetchExtracts")
     public List<TestResult> getProcessedVersion(@RequestBody List<TestCase> testcases) throws Exception {
         List<TestResult> results=new ArrayList<>();
         for(TestCase testcase:testcases){

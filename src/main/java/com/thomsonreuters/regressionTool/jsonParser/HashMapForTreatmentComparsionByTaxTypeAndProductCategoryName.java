@@ -20,9 +20,16 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     MultiValuedMap<String, String> jurisdictionHashMap = new ArrayListValuedHashMap<String, String>();
     HashMap<String, String> treatmentHashMapSplitType = new HashMap<String, String>();
     MultiValuedMap<String, String> treatmentGroupHashMap = new ArrayListValuedHashMap<String, String>();
+    boolean isStoreFlag;
+    HashMap<String, String> storeMapperMap = new HashMap<String,String>();
+    HashMap<String, String> addressMapperMap = new HashMap<String, String>();
 
     public HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(Root root) {
         this.root = root;
+        if(root.getmLocations()!=null)
+            isStoreFlag=true;
+        else
+            isStoreFlag=false;
     }
 
     public File hashMapGenerator(String env)  {
@@ -32,6 +39,9 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
             treatmentGroupHashMapGenerator();
             treatmentHashMapGenerator();
             jurisdictionHashMapGenerator();
+            if(isStoreFlag){
+                storeHashMapGenerator();
+            }
             ouptutFile=jurisdictionTreatmentMappingsExcelWriter(env);
 
         } catch (Exception e) {
@@ -87,13 +97,26 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
     void jurisdictionHashMapGenerator() {
         List<Address> addr=root.getAddresses();
         Collections.sort(addr);
+        String value="";
         for (Address a : addr){
-            if(a.getPostalRange()==null)
-                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
-            else
-                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
+            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey())){
+                value=  a.getState()+"-"+a.getCounty()+"-"+a.getCity();
+                if(a.getPostalRange()!=null)
+                    value+="-"+a.getPostalRange().getBegin()+"-"+a.getPostalRange().getEnd();
+                else
+                    value+="-"+a.getPostalCode()+"-" + a.getGeocode();
+            }
+            jurisdictionHashMap.put(a.getJurisdictionKey(), value);
+            if(isStoreFlag)
+                addressMapperMap.put(a.getAddressKey(), value);
         }
-     // System.out.println(jurisdictionHashMap);
+    }
+
+    void storeHashMapGenerator() {
+        for (Location loc : root.getmLocations()) {
+            storeMapperMap.put(loc.getName(), addressMapperMap.get(loc.getAddressKey().toString()));
+        }
+
     }
 
      File jurisdictionTreatmentMappingsExcelWriter(String env) throws IOException {
@@ -174,6 +197,14 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                 myWriter.write(key + " : " + valueList);
                 myWriter.write(System.getProperty("line.separator"));
             }
+            keylist = new ArrayList<String>(storeMapperMap.keySet());
+            Collections.sort(keylist);
+            for (String key : keylist) {
+                value= storeMapperMap.get(key);
+                myWriter.write(key + " : " + value);
+                myWriter.write(System.getProperty("line.separator"));
+            }
+            myWriter.close();
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
