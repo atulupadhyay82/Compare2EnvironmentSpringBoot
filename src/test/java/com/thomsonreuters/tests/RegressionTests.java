@@ -47,8 +47,6 @@ public class RegressionTests extends AbstractTestNGSpringContextTests
      public Object[][] dpMethod(){
          return new Object[][]{
                  {"01_Wayfair_US","WayfairUAT_01_AL"},
-                 {"01_Wayfair_US","WayfairUAT_01_AL_Store"},
-//               //  {"01_Wayfair_US","WayfairUAT_02_AK"},
                  {"01_Wayfair_US","WayfairUAT_03_AZ"},
                  {"01_Wayfair_US","WayfairUAT_04_AR"},
                  {"01_Wayfair_US","WayfairUAT_05_CA"},
@@ -111,7 +109,6 @@ public class RegressionTests extends AbstractTestNGSpringContextTests
                  {"ACME%20Company","Dell-IN"},
                  {"ACME%20Company","Dell-US"},
                  {"ACME%20Company","Dell-UK"},
-                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test"},
                  {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Full_Test_DEFAULT_MAPPING"},
                  {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test_DEFAULT_MAPPING"},
                  {"zz%20-%20Acct%20-%20WISH","Wish_UAT_PORTUGAL_TEST"},
@@ -128,17 +125,21 @@ public class RegressionTests extends AbstractTestNGSpringContextTests
                  {"VTest%20Industries","VTestVE-AuthorityType"},
                  {"VTest%20Industries","VTestVE-INTL"},
                  {"VTest%20Industries","VTestVE-TaxType"},
-                 {"QUIKTRIP%20CORPORATION","TX%20Restaurant"},
-                 {"QUIKTRIP%20CORPORATION", "Non%20Restaurant"},
-                 {"QUIKTRIP%20CORPORATION","NonRestaurantTaxType"},
+//                 {"QUIKTRIP%20CORPORATION","TX%20Restaurant"},
+//                 {"QUIKTRIP%20CORPORATION", "Non%20Restaurant"},
+//                 {"QUIKTRIP%20CORPORATION","NonRestaurantTaxType"},
                  {"Hugo%20Boss%20Retail%20Inc","XStoreExtract"},
                  {"zz%20-%20Acct%20-%20SDI%20USA","main"},
                  {"RxConnect","KPMG_UAT_RXC_01_MO"},
                  {"zz%20-%20Acct%20-%20TORY%20BURCH%20LLC%20UAT","ToryBurchMainExtract"},
-                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"}
+//
 
 //                 {"WISH%20Logistics%20B.V.","ExtractTest"},
 //                 {"Expedia","expediaFranceExtract"},
+//                 {"01_Wayfair_US","WayfairUAT_02_AK"},
+//                 {"ZZ%20-%20Acct%20-%207-ELEVEN%20INC%20UAT","SevenElevenCanada"},
+//                 {"01_Wayfair_US","WayfairUAT_01_AL_Store"},
+//                 {"zz%20-%20Acct%20-%20WISH","Wish_UAT_Medium_Test"},
          };
      }
 

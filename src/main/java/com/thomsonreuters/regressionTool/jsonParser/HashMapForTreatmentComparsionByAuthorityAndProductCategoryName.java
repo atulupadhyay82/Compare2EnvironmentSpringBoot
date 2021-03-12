@@ -186,10 +186,10 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
                 myWriter.write(key + " : " + valueList);
                 myWriter.write(System.getProperty("line.separator"));
             }
-
             if(isStoreFlag){
                 List<String> storeKeylist = new ArrayList<String>(storeMapperMap.keySet());
                 Collections.sort(storeKeylist);
+
                 for (String key : storeKeylist) {
                     value= storeMapperMap.get(key);
                     myWriter.write(key + " : " + value);
