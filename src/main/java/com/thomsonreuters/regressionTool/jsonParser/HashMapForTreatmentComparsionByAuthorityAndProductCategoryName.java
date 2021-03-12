@@ -85,8 +85,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
                     value+="-"+a.getPostalCode()+"-" + a.getGeocode();
             }
             jurisdictionHashMap.put(a.getJurisdictionKey(), value);
-            if(isStoreFlag)
-                addressMapperMap.put(a.getAddressKey(), value);
+            addressMapperMap.put(a.getAddressKey(), value);
         }
     }
 
@@ -133,12 +132,6 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
         for (int i = 0; i < root.getmAuthorityTreatmentMappings().size(); i++) {
             String productCategoryKey = root.getmAuthorityTreatmentMappings().get(i).getProductCategoryKey();
-            if(productCategoryKey.contains("1028059511478213031") ||
-                    productCategoryKey.contains("4732796101904615288")||
-                    productCategoryKey.contains("367623916056122557") ||
-                    productCategoryKey.contains("8630661440905874922") ||
-                    productCategoryKey.contains("3377714364674094217"))
-                continue;
             String treatmentKey = root.getmAuthorityTreatmentMappings().get(i).getTreatmentKey();
             String authorityKey = root.getmAuthorityTreatmentMappings().get(i).getAuthorityKey();
             String jurisdictionKey = jurisdictionAuthoritiesHashMap.get(authorityKey);
@@ -176,16 +169,16 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
 
-        List<String> keylist = new ArrayList<String>(treatmentComaparator.keySet());
+        List<String> treatmentKeylist = new ArrayList<String>(treatmentComaparator.keySet());
 
 
-        Collections.sort(keylist);
+        Collections.sort(treatmentKeylist);
 
         try {
             resultFile = new File(System.getProperty("user.dir") + "/src/main/resources/jsonFiles/" + fileName + ".txt");
             resultFile.createNewFile();
             FileWriter myWriter = new FileWriter(resultFile);
-            for (String key : keylist) {
+            for (String key : treatmentKeylist) {
                 Collection<String> values = treatmentComaparator.get(key);
                 // System.out.println(key +  " : " + treatmentComaparator.get(key));
                 List<String> valueList = new ArrayList<String>(treatmentComaparator.get(key));
@@ -193,12 +186,16 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
                 myWriter.write(key + " : " + valueList);
                 myWriter.write(System.getProperty("line.separator"));
             }
-            keylist = new ArrayList<String>(storeMapperMap.keySet());
-            Collections.sort(keylist);
-            for (String key : keylist) {
-                value= storeMapperMap.get(key);
-                myWriter.write(key + " : " + value);
-                myWriter.write(System.getProperty("line.separator"));
+
+            if(isStoreFlag){
+                List<String> storeKeylist = new ArrayList<String>(storeMapperMap.keySet());
+                Collections.sort(storeKeylist);
+                for (String key : storeKeylist) {
+                    value= storeMapperMap.get(key);
+                    myWriter.write(key + " : " + value);
+                    myWriter.write(System.getProperty("line.separator"));
+                }
+
             }
             myWriter.close();
         } catch (IOException e) {

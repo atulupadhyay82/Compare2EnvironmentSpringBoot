@@ -107,8 +107,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                     value+="-"+a.getPostalCode()+"-" + a.getGeocode();
             }
             jurisdictionHashMap.put(a.getJurisdictionKey(), value);
-            if(isStoreFlag)
-                addressMapperMap.put(a.getAddressKey(), value);
+            addressMapperMap.put(a.getAddressKey(), value);
         }
     }
 
@@ -181,15 +180,15 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         }
 
         Collection<Map.Entry<String, String>> entries = treatmentComaparator.entries();
-        List<String> keylist = new ArrayList<String>(treatmentComaparator.keySet());
+        List<String> treatmentKeylist = new ArrayList<String>(treatmentComaparator.keySet());
 
-        Collections.sort(keylist);
+        Collections.sort(treatmentKeylist);
 
         try {
             resultFile = new File(System.getProperty("user.dir") + "/src/main/resources/jsonFiles/" + fileName + ".txt");
             resultFile.createNewFile();
             FileWriter myWriter = new FileWriter(resultFile);
-            for (String key : keylist) {
+            for (String key : treatmentKeylist) {
                 Collection<String> values = treatmentComaparator.get(key);
                 // System.out.println(key +  " : " + treatmentComaparator.get(key));
                 List<String> valueList = new ArrayList<String>(treatmentComaparator.get(key));
@@ -197,14 +196,17 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
                 myWriter.write(key + " : " + valueList);
                 myWriter.write(System.getProperty("line.separator"));
             }
-            keylist = new ArrayList<String>(storeMapperMap.keySet());
-            Collections.sort(keylist);
-            for (String key : keylist) {
-                value= storeMapperMap.get(key);
-                myWriter.write(key + " : " + value);
-                myWriter.write(System.getProperty("line.separator"));
+            if(isStoreFlag){
+                List<String> storeKeylist = new ArrayList<String>(storeMapperMap.keySet());
+                Collections.sort(storeKeylist);
+                for (String key : storeKeylist) {
+                    value= storeMapperMap.get(key);
+                    myWriter.write(key + " : " + value);
+                    myWriter.write(System.getProperty("line.separator"));
+                }
+
             }
-            myWriter.close();
+
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
