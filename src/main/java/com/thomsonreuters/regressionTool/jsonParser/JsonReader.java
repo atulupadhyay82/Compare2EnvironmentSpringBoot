@@ -20,7 +20,7 @@ public class JsonReader {
             File processedExtract =null;
             Root root = gson.fromJson(jsonFile, Root.class);
 
-            if (root.getGroupingRule().equalsIgnoreCase("taxType")) {
+            if (root.getGroupingRule().equalsIgnoreCase("taxType") || root.getGroupingRule().equalsIgnoreCase("authorityType")) {
                 processedExtract= new HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName(root).hashMapGenerator(env);
 
             } else if (root.getGroupingRule().equalsIgnoreCase("authority")) {

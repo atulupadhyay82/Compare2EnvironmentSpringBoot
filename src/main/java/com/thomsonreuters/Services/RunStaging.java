@@ -213,11 +213,11 @@ public class RunStaging {
             logger.info(extractName+" does not have treatments data in "+env);
             validateResult=extractName+" does not have treatments data in "+env;
         }
-        else if((groupingRule.equalsIgnoreCase("Authority") || groupingRule.equalsIgnoreCase("AuthorityType")) && root.getmAuthorityTreatmentMappings()==null) {
+        else if(groupingRule.equalsIgnoreCase("Authority")  && root.getmAuthorityTreatmentMappings()==null) {
             logger.info(extractName + " does not have authorities treatment data in " + env);
             validateResult=extractName+" does not have authorities treatment  data in "+env;
         }
-        else if(groupingRule.equalsIgnoreCase("taxType") && root.getJurisdictionTreatmentMappings()==null){
+        else if((groupingRule.equalsIgnoreCase("taxType") || groupingRule.equalsIgnoreCase("AuthorityType")) && root.getJurisdictionTreatmentMappings()==null){
             logger.info(extractName+" does not have jurisdictions treatment data in "+env);
             validateResult=extractName+" does not have jurisdictions treatment  data in "+env;
         }

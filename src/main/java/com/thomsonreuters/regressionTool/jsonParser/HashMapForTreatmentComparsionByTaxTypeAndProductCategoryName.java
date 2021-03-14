@@ -40,7 +40,7 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
             treatmentHashMapGenerator();
             jurisdictionHashMapGenerator();
             if(isStoreFlag){
-                storeHashMapGenerator();
+                //storeHashMapGenerator();
             }
             ouptutFile=jurisdictionTreatmentMappingsExcelWriter(env);
 
@@ -99,15 +99,10 @@ public class HashMapForTreatmentComparsionByTaxTypeAndProductCategoryName {
         Collections.sort(addr);
         String value="";
         for (Address a : addr){
-            if(!jurisdictionHashMap.containsKey(a.getJurisdictionKey())){
-                value=  a.getState()+"-"+a.getCounty()+"-"+a.getCity();
-                if(a.getPostalRange()!=null)
-                    value+="-"+a.getPostalRange().getBegin()+"-"+a.getPostalRange().getEnd();
-                else
-                    value+="-"+a.getPostalCode()+"-" + a.getGeocode();
-            }
-            jurisdictionHashMap.put(a.getJurisdictionKey(), value);
-            addressMapperMap.put(a.getAddressKey(), value);
+            if(a.getPostalRange()==null)
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+            else
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
         }
     }
 
