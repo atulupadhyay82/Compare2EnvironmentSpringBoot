@@ -44,9 +44,10 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             jurisdictionAuthoritiesHashMapGenerator();
             treatmentHashMapGenerator();
             if(isStoreFlag){
-              //storeHashMapGenerator();
+                addressHashMapGenerator();
+                storeHashMapGenerator();
             }
-            outputFile=authorityTreatmentMappingsExcelWriter(env);
+            outputFile=authorityTreatmentMappingsWriter(env);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +81,19 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             if(a.getPostalRange()==null)
                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
             else
-                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd())
+        }
+    }
+
+    void addressHashMapGenerator() {
+        List<Address> addr=root.getAddresses();
+        Collections.sort(addr);
+        String value="";
+        for (Address a : addr){
+            if(a.getPostalRange()==null)
+                addressMapperMap.put(a.getAddressKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
+            else
+                addressMapperMap.put(a.getAddressKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
         }
     }
 
@@ -118,7 +131,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
 
     }
 
-    File authorityTreatmentMappingsExcelWriter(String env) throws IOException {
+    File authorityTreatmentMappingsWriter(String env) throws IOException {
         String extractName= root.getExtractName();
         String fileName = extractName+"_" +env;
         File resultFile=null;
