@@ -81,7 +81,7 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             if(a.getPostalRange()==null)
                 jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalCode() + "-" + a.getGeocode());
             else
-                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd())
+                jurisdictionHashMap.put(a.getJurisdictionKey(), a.getState()+"-"+a.getCounty()+"-"+a.getCity()+"-"+ a.getPostalRange().getBegin() + "-" + a.getPostalRange().getEnd());
         }
     }
 
@@ -187,8 +187,6 @@ public class HashMapForTreatmentComparsionByAuthorityAndProductCategoryName {
             resultFile.createNewFile();
             FileWriter myWriter = new FileWriter(resultFile);
             for (String key : treatmentKeylist) {
-                Collection<String> values = treatmentComaparator.get(key);
-                // System.out.println(key +  " : " + treatmentComaparator.get(key));
                 List<String> valueList = new ArrayList<String>(treatmentComaparator.get(key));
                 Collections.sort(valueList);
                 myWriter.write(key + " : " + valueList);
